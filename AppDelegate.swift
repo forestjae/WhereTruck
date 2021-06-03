@@ -6,13 +6,18 @@
 //
 
 import UIKit
+import KakaoSDKCommon
+import KakaoSDKAuth
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
 
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        KakaoSDKCommon.initSDK(appKey: "ed176e180bf11e38813e8542a2112871")
         // Override point for customization after application launch.
         return true
     }
