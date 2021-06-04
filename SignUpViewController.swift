@@ -8,16 +8,23 @@
 import UIKit
 import Alamofire
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBOutlet weak var nickNameTextField: UITextField!
     @IBOutlet weak var selectRoleSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var signUpButton: UIButton!
+    
+    @IBAction func touchUpSignUpButton(_ sender: UIButton) {
+        userinfo.nickName = nickNameTextField.text
+        if let nickName = userinfo.nickName {
+        userSignUpAPICall(nickName: nickName)
+        }
+    }
     
     let userinfo = UserInfo.shared
-    var nickName: String
     
-    private func userSignUpAPICall() {
+    private func userSignUpAPICall(nickName: String) {
         
         let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/user/save"
         var request = URLRequest(url: URL(string: url)!)
@@ -27,7 +34,7 @@ class SignUpViewController: UIViewController {
         
         let userSignUpInfo = [
             "id": id,
-            "nickName": "yain"
+            "nickName": nickName
         ] as Dictionary
         
         do {
@@ -51,13 +58,36 @@ class SignUpViewController: UIViewController {
         }
 
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        enableButtonWhenAllFactorCompleted()
+    }
+    
+    private func enableButtonWhenAllFactorCompleted() {
+        //segmented control 조건 필요
+        if nickNameTextField.hasText == true {
+            signUpButton.isUserInteractionEnabled = true
+            signUpButton.setTitleColor(.blue, for: .normal)
+        } else {
+            signUpButton.isUserInteractionEnabled = false
+            signUpButton.setTitleColor(.gray, for: .normal)
+    }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        nickNameTextField.delegate = self
+        signUpButton.isUserInteractionEnabled = false
+        signUpButton.setTitleColor(.gray, for: .normal)
+        
+        
         // Do any additional setup after loading the view.
     }
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+            self.view.endEditing(true)
+    }
+
 
     /*
     // MARK: - Navigation
