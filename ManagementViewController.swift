@@ -1,22 +1,14 @@
 //
-//  MapViewController.swift
+//  ManagementViewController.swift
 //  WhereTruck
 //
-//  Created by 이승재 on 2021/06/03.
+//  Created by 이승재 on 2021/06/04.
 //
 
 import UIKit
-import NMapsMap
 
-class MapViewController: UIViewController {
-    
-    @IBOutlet weak var naverMapView: NMFNaverMapView!
-    var mapView: NMFMapView {
-        return naverMapView.mapView
-    }
-    
-    
-    
+class ManagementViewController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
