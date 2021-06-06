@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PermissionRegionList {
+struct PermissionRegionList: Codable {
     let docs: [PermissionRegion]
 }
 
