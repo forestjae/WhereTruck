@@ -15,16 +15,28 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var selectRoleSegmentedControl: UISegmentedControl!
     @IBOutlet weak var signUpButton: UIButton!
     
-    @IBAction func touchUpSignUpButton(_ sender: UIButton) {
+    enum userType {
+        case turckOwner
+        case customer
+    }
+    
+    @IBAction private func touchUpSignUpButton(_ sender: UIButton) {
         userinfo.nickName = nickNameTextField.text
+        
         if let nickName = userinfo.nickName {
-        userSignUpAPICall(nickName: nickName)
+            userSignUpAPICall(nickName: nickName, userType: .turckOwner )
         }
     }
     
-    let userinfo = UserInfo.shared
+    @IBAction private func touchUpSegementedControl(_sender: UISegmentedControl) {
+        switch
+        
+    }
     
-    private func userSignUpAPICall(nickName: String) {
+    let userinfo = UserInfo.shared
+    var userType: userType = .customer
+    
+    private func userSignUpAPICall(nickName: String, userType: userType) {
         
         let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/user/save"
         var request = URLRequest(url: URL(string: url)!)

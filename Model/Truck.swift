@@ -6,3 +6,15 @@
 //
 
 import Foundation
+
+struct truck: Codable {
+    let id: String
+    let name: String
+    let geoLocation: Geocode
+    let description: String
+    let opened: Bool
+    let userId: String
+    
+}
+
+    
