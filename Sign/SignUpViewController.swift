@@ -27,11 +27,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             userSignUpAPICall(nickName: nickName, userType: .turckOwner )
         }
     }
-    
-    @IBAction private func touchUpSegementedControl(_sender: UISegmentedControl) {
-        switch
-        
-    }
+//    
+//    @IBAction private func touchUpSegementedControl(_sender: UISegmentedControl) {
+//        switch
+//        
+//    }
     
     let userinfo = UserInfo.shared
     var userType: userType = .customer

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="KzG-kD-u3D">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -111,7 +111,7 @@
                                 </connections>
                             </textField>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dRr-Cq-FOh">
-                                <rect key="frame" x="20" y="382" width="397" height="32"/>
+                                <rect key="frame" x="9" y="382" width="397" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="푸드트럭에서 맛있는걸 먹고 싶어요"/>
@@ -133,7 +133,7 @@
             </objects>
             <point key="canvasLocation" x="262.31884057971018" y="91.741071428571431"/>
         </scene>
-        <!--Map-->
+        <!--Map View Controller-->
         <scene sceneID="Ycb-BM-4lb">
             <objects>
                 <viewController id="Xr1-OG-Dwe" customClass="MapViewController" customModule="WhereTruck" customModuleProvider="target" sceneMemberID="viewController">
@@ -150,7 +150,7 @@
                         <viewLayoutGuide key="safeArea" id="aaV-XI-NcV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Map" id="vD7-cv-0wf"/>
+                    <tabBarItem key="tabBarItem" title="" selectedImage="map" catalog="system" id="vD7-cv-0wf"/>
                     <connections>
                         <outlet property="naverMapView" destination="azz-3K-a8l" id="PwA-1j-cWO"/>
                     </connections>
@@ -159,31 +159,17 @@
             </objects>
             <point key="canvasLocation" x="2334.7826086956525" y="91.741071428571431"/>
         </scene>
-        <!--My-->
+        <!--My Info View Controller-->
         <scene sceneID="n3c-RS-0jT">
             <objects>
-                <viewController id="KzG-kD-u3D" sceneMemberID="viewController">
+                <viewController id="KzG-kD-u3D" customClass="MyInfoViewController" customModule="WhereTruck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xp9-he-8wI">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="관리화면" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nxs-Kr-Ip8">
-                                <rect key="frame" x="186" y="98" width="59" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pfF-1c-0Dn">
-                                <rect key="frame" x="0.0" y="209" width="414" height="604"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </tableView>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="mjW-5C-Xrr"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="My" id="URn-Gn-5Q3"/>
+                    <tabBarItem key="tabBarItem" title="" selectedImage="person.fill" catalog="system" id="URn-Gn-5Q3"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Shr-q9-d6i" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -212,6 +198,8 @@
     <resources>
         <image name="btnD_official" width="920" height="200"/>
         <image name="kakao_login_large_wide-1" width="600" height="90"/>
+        <image name="map" catalog="system" width="128" height="110"/>
+        <image name="person.fill" catalog="system" width="128" height="120"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
