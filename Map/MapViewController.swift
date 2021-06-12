@@ -160,9 +160,31 @@ class MapViewController: UIViewController {
         case disappear
     }
     
+    enum SetTruckMarkerMode {
+        case normal
+        case set
+    }
+    
+//    let userDefaults: UserDefaultsValue
     //MARK:- Present Region Marker
     
     var permissionRegions: [PermissionRegion] = []
+    
+    func permissionRegionAllAPICall(){
+        let headers: HTTPHeaders = [
+            "jwt": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMDA2MTIuY2I3OThjNjQ3ZTcwNDkyZGFmOTQ5YTkzYmRiMzhjYjQuMDMyNyIsImlhdCI6MTYyMzQ4NDM2OCwiZXhwIjoxNjIzNTcwNzY4fQ.xK5ec8s4zWknh2Yvlp-pXh0useEuMM42lquqDii21uI"
+          ]
+        AF.request("http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/region/all", encoding: URLEncoding.default, headers: headers).responseJSON { [weak self] response in
+            print("Call Success!")
+            guard let data = response.data else { return }
+            let decoder = JSONDecoder()
+            print(String(data: data, encoding: .utf8))
+            guard let model = try? decoder.decode(PermissionRegionList.self, from: data) else { return }
+            print(model)
+            self?.permissionRegions = model.docs
+            
+        }
+}
     
     func permissionRegionAPICall(lat: Double, lng: Double, distance: Int){
         AF.request("http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/region/search/geo?lat=\(lat)&lon=\(lng)&distance=\(distance)", encoding: URLEncoding.default).responseJSON { [weak self] response in
@@ -185,15 +207,16 @@ class MapViewController: UIViewController {
     }
     
     func permissionRegionMarkerDraw(){
+
         DispatchQueue.global(qos: .default).async {
             // 백그라운드 스레드
             var markers = [NMFMarker]()
-            for permissionRegion in self.permissionRegions {
-                let marker = NMFMarker(position: NMGLatLng(lat: permissionRegion.geoLoaction.lat, lng: permissionRegion.geoLoaction.lng))
-                marker.iconImage = NMF_MARKER_IMAGE_BLUE
-                marker.captionText = permissionRegion.regionName
-                markers.append(marker)
-            }
+//            for permissionRegion in self.permissionRegions {
+//                let marker = NMFMarker(position: NMGLatLng(lat: permissionRegion.geoLocation.lat, lng: permissionRegion.geoLocation.lat))
+//                marker.iconImage = NMF_MARKER_IMAGE_BLUE
+//                marker.captionText = permissionRegion.regionName
+//                markers.append(marker)
+//            }
             
             DispatchQueue.main.async { [weak self] in
                 // 메인 스레드
@@ -252,6 +275,8 @@ class MapViewController: UIViewController {
     
     }
     
+
+    
     
     func setAddressOnButton(){
         addressButton.setTitle("\(address)", for: .normal)
@@ -270,13 +295,15 @@ class MapViewController: UIViewController {
         bindConstraints()
         
         getCurrentLocation()
-
+//        permissionRegionAPICall(lat: <#T##Double#>, lng: <#T##Double#>, distance: 300)
+        permissionRegionAllAPICall()
         permissionRegionMarkerDraw()
         print("GEOCODE\(geoCodeToUse)")
         getAddressFromGeocode(lat: geoCodeToUse.lat, lng: geoCodeToUse.lng)
         
         setAddressOnButton()
         self.selectSearchRangeButton.addTarget(self, action: #selector(onTabButton), for: .touchUpInside)
+        
         
         
         dropDown.dataSource = ["5Km", "10Km", "20Km"]

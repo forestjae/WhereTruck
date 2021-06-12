@@ -20,13 +20,13 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         case customer
     }
     
-    @IBAction private func touchUpSignUpButton(_ sender: UIButton) {
-        userinfo.nickName = nickNameTextField.text
-        
-        if let nickName = userinfo.nickName {
-            userSignUpAPICall(nickName: nickName, userType: .turckOwner )
-        }
-    }
+//    @IBAction private func touchUpSignUpButton(_ sender: UIButton) {
+//        userinfo.nickName = nickNameTextField.text
+//        
+//        if let nickName = userinfo.nickName {
+//            userSignUpAPICall(nickName: nickName, userType: .turckOwner )
+//        }
+//    }
 //    
 //    @IBAction private func touchUpSegementedControl(_sender: UISegmentedControl) {
 //        switch

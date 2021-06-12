@@ -11,10 +11,16 @@ import Then
 
 class LogoViewController: UIViewController {
     
+    
+    let userDefaults: UserDefaultsValue = UserDefaultsValue()
+    
+    
+    
     let logoView = AnimationView(name:"43354-food-truck").then {
         $0.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         $0.contentMode = .scaleAspectFit
         $0.loopMode = .loop
+        $0.play()
     }
     
     let logoTitle = UILabel().then {
@@ -27,6 +33,13 @@ class LogoViewController: UIViewController {
         $0.translatesAutoresizingMaskIntoConstraints = false
         
     }
+    
+    func checkMembership(){
+        
+        
+        
+    }
+    
     
     private func bindConstraints(){
         logoView.snp.makeConstraints { make in
@@ -42,28 +55,22 @@ class LogoViewController: UIViewController {
         }
     }
     
-    @IBOutlet private weak var logoTitleTopConstraint: NSLayoutConstraint!
-    
-    
+ 
 
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         self.view.addSubview(logoView)
         self.view.addSubview(logoTitle)
         bindConstraints()
-        print(logoView)
-        logoView.play()
-        logoView.loopMode = .loop
+
         
         
-        super.viewDidLoad()
+
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print(11)
-        logoView.play()
-        logoView.loopMode = .loop
     }
 
 }

@@ -9,6 +9,8 @@ import UIKit
 
 class MyInfoViewController: UIViewController {
     
+
+    
     
     let nickNameButton = UIButton().then {
         $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 15)
@@ -22,7 +24,7 @@ class MyInfoViewController: UIViewController {
     
     let configButton = UIButton().then {
         $0.setImage(UIImage(systemName: "gearshape") , for: .normal)
-        $0.tintColor = .black
+        $0.tintColor = .systemBlue
         $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 15)
         $0.setTitleColor(.black, for: .normal)
         $0.setTitle("", for: .normal)
@@ -37,7 +39,57 @@ class MyInfoViewController: UIViewController {
         //        $0.layer.shadowOpacity = 0.1
     }
     
-    let myinfoTableView = UITableView().then {
+    let truckContainer = UIView().then {
+        $0.backgroundColor = UIColor(red: 200/255, green: 215/255, blue: 217/255, alpha: 1.0)
+        $0.layer.cornerRadius = 3
+        //        $0.layer.shadowColor = UIColor.black.cgColor
+        //        $0.layer.shadowOffset = CGSize(width: 2, height: 2)
+        //        $0.layer.shadowOpacity = 0.1
+    }
+    
+    let truckLabel = UILabel().then {
+        $0.text = "나의 트럭"
+        $0.textColor = .black
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+    }
+    
+    let truckNameLabel = UILabel().then {
+        $0.text = "창걸이네 삼겹살"
+        $0.textColor = .black
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+    }
+    
+    let truckImage = UIImageView().then {
+        $0.image = UIImage.init(named: "truck_example")
+        
+    }
+    
+    let truckStatusLabel = UILabel().then {
+        $0.text = "현재 운영 중"
+        $0.textColor = .systemBlue
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 20)
+    }
+    
+    let reviewLabel = UILabel().then {
+        $0.text = "내가 쓴 리뷰"
+        $0.textColor = .black
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+    }
+    
+    let reviewCountLabel = UILabel().then {
+        $0.text = "(4)"
+        $0.textColor = .black
+        $0.font = UIFont(name: "AppleSDGothicNeoEB00", size: 24)
+    }
+    
+    let reviewMoreButton = UIButton().then {
+        $0.setTitle("더보기", for: .normal)
+        $0.setTitleColor(UIColor(red: 200/255, green: 100/255, blue: 7/255, alpha: 1.0), for: .normal)
+        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+        
+    }
+    
+    let reviewTableView = UITableView().then {
         $0.backgroundColor = .clear
         $0.tableFooterView = UIView()
         $0.separatorStyle = .none
@@ -50,8 +102,8 @@ class MyInfoViewController: UIViewController {
     
     
     
-    
     func bindConstraints() {
+        
         nickNameContainer.snp.makeConstraints{ (make) in
             make.left.equalToSuperview().offset(25)
             make.right.equalToSuperview().offset(-25)
@@ -61,71 +113,136 @@ class MyInfoViewController: UIViewController {
         nickNameButton.snp.makeConstraints{ (make) in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(11.5)
             make.left.equalTo(nickNameContainer.snp.left).offset(15)
-            
         }
         
         configButton.snp.makeConstraints{ (make) in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(10)
             make.right.equalTo(nickNameContainer.snp.right).offset(-13)
+        }
+        
+        
+
+        truckLabel.snp.makeConstraints{ (make) in
+            make.top.equalTo(nickNameContainer.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(24)
             
         }
         
-        myinfoTableView.snp.makeConstraints{ (make) in
-            make.top.equalTo(nickNameContainer.snp.bottom).offset(10)
+        truckContainer.snp.makeConstraints{ (make) in
+            make.top.equalTo(truckLabel.snp.bottom).offset(10)
+            make.height.equalTo(120)
             make.left.equalToSuperview().offset(25)
             make.right.equalToSuperview().offset(-25)
-            make.bottom.equalToSuperview().offset(130)
             
             
         }
+        
+        
+        truckNameLabel.snp.makeConstraints{ (make) in
+            make.top.equalTo(truckContainer.snp.top).offset(10)
+            make.left.equalTo(truckImage.snp.right).offset(10)
+  
+            
+            
+        }
+        
+        
+        truckImage.snp.makeConstraints{ (make) in
+            make.top.equalTo(truckContainer.snp.top).offset(10)
+            make.left.equalTo(truckContainer.snp.left).offset(10)
+            
+            make.width.height.equalTo(100)
+            
+        }
+        
+        truckStatusLabel.snp.makeConstraints{ (make) in
+            make.centerX.equalTo(truckNameLabel.snp.centerX)
+            make.centerY.equalTo(truckImage.snp.centerY)
+        }
+        
+
+        
+        reviewLabel.snp.makeConstraints{ (make) in
+            make.top.equalTo(truckContainer.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(24)
+            
+        }
+        
+        reviewCountLabel.snp.makeConstraints{ (make) in
+            make.top.equalTo(truckContainer.snp.bottom).offset(10)
+            make.left.equalTo(reviewLabel.snp.right).offset(5)
+            
+        }
+        
+        reviewMoreButton.snp.makeConstraints{ (make) in
+            make.top.equalTo(truckContainer.snp.bottom).offset(10)
+            make.right.equalToSuperview().offset(-20)
+            
+        }
+        
+        reviewTableView.snp.makeConstraints{ (make) in
+        
+            make.top.equalTo(reviewLabel.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(24)
+            make.right.equalToSuperview().offset(-24)
+            make.bottom.equalToSuperview().offset(200)
+        }
     }
     
+
+    let item: [String] = ["abc", "def", "ghi", "dasf"]
     override func viewDidLoad() {
         super.viewDidLoad()
-        myinfoTableView.delegate = self
-        myinfoTableView.dataSource = self
-        self.myinfoTableView.register(UITableViewCell.self, forCellReuseIdentifier: "MyInfoTruckCell")
+        view.addSubview(reviewTableView)
+        reviewTableView.delegate = self
+        reviewTableView.dataSource = self
+        reviewTableView.translatesAutoresizingMaskIntoConstraints = false
+        self.reviewTableView.register(MyInfoReviewCell.self, forCellReuseIdentifier: "MyInfoReviewCell")
+        
+        reviewTableView.rowHeight = UITableView.automaticDimension
+        reviewTableView.estimatedRowHeight = UITableView.automaticDimension
+        
+
         view.addSubview(nickNameContainer)
-        
         view.addSubview(nickNameButton)
-        
         view.addSubview(configButton)
+        
+        view.addSubview(truckContainer)
+        view.addSubview(truckLabel)
+        view.addSubview(truckNameLabel)
+        view.addSubview(truckImage)
+        view.addSubview(truckStatusLabel)
+        
+        view.addSubview(reviewLabel)
+        view.addSubview(reviewCountLabel)
+        view.addSubview(reviewMoreButton)
+
+        
+        
         bindConstraints()
     }
+
     
 }
+
 
 extension MyInfoViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
-    }
+ 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0...1:
-            return 1
-        case 2:
-            return 3
-        default:
-            return 0
-        }
+        return 4
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            guard let cell: MyInfoTruckCell = self.tableviewdeque
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyInfoReviewCell", for: indexPath) as? MyInfoReviewCell else {
+            return UITableViewCell() }
         
-        default:
-            fatalError(" ")
-            
-        }
+
         
+        
+        return cell
     }
     
-    
-    
-    
-}
 
+}

@@ -8,50 +8,152 @@
 import UIKit
 import Then
 
-class MyInfoTableViewCell: UITableViewCell {
+class MyInfoReviewCell: UITableViewCell {
     
-    let truckLabel = UILabel().then {
-        $0.text = "나의 트럭"
-        $0.textColor = .white
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+    let reviewWhatTruckLabel = UILabel().then {
+        $0.text = "창걸이네 삼겹살"
+        $0.textColor = .black
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 15)
     }
-    
-    let truckNameLabel = UILabel().then {
-        $0.text = "호식이 두마리 치킨"
-        $0.textColor = .white
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+
+
+    let reviewContentsLabel = UILabel().then {
+        $0.text = "엄청 맛있어요! 재방문의사 100%!"
+        $0.textColor = .systemGray2
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 14)
     }
+
     
-    let truckImage = UIView().then {
+    let star1 = UIButton().then {
+
+        $0.setImage(UIImage(systemName: "star.fill"), for: .selected)
+        $0.setImage(UIImage(systemName: "star"), for: .normal)
+        $0.isUserInteractionEnabled = false
+        $0.tintColor = .systemYellow
+        $0.setTitleColor(.systemYellow, for: [.normal, .selected])
+        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 15)
+        $0.setTitle("", for: [.normal, .selected])
+    }
+
+    let star2 = UIButton().then {
+        $0.setImage(UIImage(systemName: "star.fill"), for: .selected)
+        $0.setImage(UIImage(systemName: "star"), for: .normal)
+        $0.isUserInteractionEnabled = false
+        $0.tintColor = .systemYellow
+        $0.setTitleColor(.systemYellow, for: [.normal, .selected])
+        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 15)
+
+    }
+
+    let star3 = UIButton().then {
+        $0.setImage(UIImage(systemName: "star.fill"), for: .selected)
+        $0.setImage(UIImage(systemName: "star"), for: .normal)
+        $0.isUserInteractionEnabled = false
+        $0.tintColor = .systemYellow
+        $0.setTitleColor(.systemYellow, for: [.normal, .selected])
+        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 15)
+
+    }
+
+    let star4 = UIButton().then {
+        $0.setImage(UIImage(systemName: "star.fill"), for: .selected)
+        $0.setImage(UIImage(systemName: "star"), for: .normal)
+        $0.isUserInteractionEnabled = false
+        $0.tintColor = .systemYellow
+        $0.setTitleColor(.systemYellow, for: [.normal, .selected])
+        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 15)
+ 
+    }
+
+    let star5 = UIButton().then {
+        $0.setImage(UIImage(systemName: "star.fill"), for: .selected)
+        $0.setImage(UIImage(systemName: "star"), for: .normal)
+        $0.isUserInteractionEnabled = false
+        $0.tintColor = .systemYellow
+        $0.setTitleColor(.systemYellow, for: [.normal, .selected])
+        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 15)
+  
+    }
+
+    let starStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.alignment = .leading
         $0.backgroundColor = .clear
+        $0.spacing = 2
+    }
+
+    private func setupView() {
+        self.selectionStyle = .none
+        self.starStackView.addArrangedSubview(star1)
+        self.starStackView.addArrangedSubview(star2)
+        self.starStackView.addArrangedSubview(star3)
+        self.starStackView.addArrangedSubview(star4)
+        self.starStackView.addArrangedSubview(star5)
+        self.addSubview(reviewWhatTruckLabel)
+        self.addSubview(reviewContentsLabel)
+        self.addSubview(starStackView)
+
+    }
+    
+    private func bindConstraints() {
+        self.reviewWhatTruckLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(4)
+          
+        }
+
+        self.reviewContentsLabel.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(16)
+            make.top.equalTo(reviewWhatTruckLabel.snp.bottom).offset(4)
+            make.bottom.equalToSuperview().offset(-10)
+
+        }
+
+
+        self.star1.snp.makeConstraints { make in
+            make.width.height.equalTo(14)
+            
+        }
+
+        self.star2.snp.makeConstraints { make in
+            make.width.height.equalTo(14)
+        }
+
+        self.star3.snp.makeConstraints { make in
+            make.width.height.equalTo(14)
+        }
+
+        self.star4.snp.makeConstraints { make in
+            make.width.height.equalTo(14)
+        }
+
+        self.star5.snp.makeConstraints { make in
+            make.width.height.equalTo(14)
+        }
+
+        self.starStackView.snp.makeConstraints { make in
+            make.centerY.equalTo(reviewWhatTruckLabel.snp.centerY)
+//            make.left.equalTo(reviewWhatTruckLabel.snp.right).offset(10)
+            make.right.equalToSuperview().offset(-13)
+        }
+
+    }
+    
+
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: "MyInfoReviewCell")
+ 
+        setupView()
+        bindConstraints()
+
+ 
+
+    }
         
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-    
-    let truckStatusLabel = UILabel().then {
-        $0.text = "현재 운영 중"
-        $0.textColor = .white
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-    }    
-    
-    let reviewLabel = UILabel().then {
-        $0.text = "my_page_registered_review"
-        $0.textColor = .white
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-    }
-    
-    let reviewCountLabel = UILabel().then {
-        $0.textColor = .white
-        $0.font = UIFont(name: "AppleSDGothicNeoEB00", size: 24)
-    }
-    
-    let reviewMoreButton = UIButton().then {
-        $0.setTitle("더보기", for: .normal)
-        $0.setTitleColor(UIColor(red: 200/255, green: 100/255, blue: 7/255, alpha: 1.0), for: .normal)
-        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-        
-    }
-    
-    
     
     
 

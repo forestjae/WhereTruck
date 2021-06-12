@@ -12,37 +12,37 @@ struct PermissionRegionList: Codable {
 }
 
 struct PermissionRegion: Codable {
-    let regionName: String
-    let regionType: Int
-    let city: String
-    let town: String
-    let roadAddress: String
-    let postAddress: String
-    let geoLoaction: Geocode
-    let capacity: Int
-    let cost: String
-    let permissionStartDate: Date
-    let permissionEndDate: Date
-    let closedDays: String
-    let weekdayStartTime: String
-    let weekdayEndTime: String
-    let weekendStartTiem: String
-    let weekendEndTime: String
-    let restrictedItems: String
-    let agencyName: String
-    let agencyTel: String
+    let regionName: String?
+    let regionType: Int?
+    let city: String?
+    let town: String?
+    let roadAddress: String?
+    let postAddress: String?
+    let geoLocation: Geocode?
+    let capacity: Int?
+    let cost: String?
+    let permissionStartDate: String?
+    let permissionEndDate: String?
+    let closedDays: String?
+    let weekdayStartTime: String?
+    let weekdayEndTime: String?
+    let weekendStartTime: String?
+    let weekendEndTime: String?
+    let restrictedItems: String?
+    let agencyName: String?
+    let agencyTel: String?
     
     
 }
     
 
 struct Geocode: Codable{
-    let lat: Double
-    let lng: Double
-    enum CodingKeys : String, CodingKey {
-        case lat
-        case lng = "lon"
-    }
+    let lat: Double?
+    let lon: Double?
+//    enum CodingKeys : String, CodingKey {
+//        case lat
+//        case lng = "lon"
+//    }
 }
 
 struct FestivalRegion: Codable {

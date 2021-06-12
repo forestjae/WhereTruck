@@ -7,9 +7,24 @@
 
 import Foundation
 
+struct UserInfomation: Decodable {
+    let user: User
+    let jwt: String
+}
+
 struct User: Decodable {
     let id: String
-    let email: String?
-    let name: String?
-    let nickName:String
+    let nickName: String
+    let role: String
+    let favorites: [Favorite]
 }
+
+struct Favorite: Decodable {
+    let favorite: String
+}
+
+
+
+
+
+
