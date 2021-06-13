@@ -13,13 +13,12 @@ import Alamofire
 import AuthenticationServices
 import Lottie
 
-
 class UserInfo {
     static let shared = UserInfo()
     
-    var id: Int64 = 0
-    var nickName: String = "정창걸"
-    var role: String = "OWNER"
+    var id: String = ""
+    var nickName: String = ""
+    var role: String = ""
     var accessToken: String?
     
     private init() { }
@@ -30,13 +29,7 @@ class LogInViewController: UIViewController {
     
     
     let userDefaults: UserDefaultsValue = UserDefaultsValue()
-    
-    
-    
-    
-    private var userModel: User?
-    
-//    @IBOutlet weak var appleLoginView: UIView!
+    let userinfo = UserInfo.shared
     
     let appleLoginButton = ASAuthorizationAppleIDButton(type: .signIn, style: .whiteOutline).then {
         $0.cornerRadius = 5
@@ -47,7 +40,7 @@ class LogInViewController: UIViewController {
         
     }
     
-    let userinfo = UserInfo.shared
+
     
     let logoView = AnimationView(name:"43354-food-truck").then {
         $0.autoresizingMask = [.flexibleHeight, .flexibleWidth]
@@ -95,9 +88,6 @@ class LogInViewController: UIViewController {
         }
         
     }
-    
-    
-    
     func kakaoLogin(){
         
         if (UserApi.isKakaoTalkLoginAvailable()) {
@@ -113,8 +103,7 @@ class LogInViewController: UIViewController {
                             
                             print("accessToken : \(accessToken)")
                             self.userLoginAPICall(type: "kakao", authToken: accessToken)
-                            self.userDefaults.setToken(token: accessToken)
-                            
+                            self.userDefaults.setUserType(Type: "kakao")
                         }
                     }
                     
@@ -135,31 +124,27 @@ class LogInViewController: UIViewController {
             }
         }
         
-        UserApi.shared.me() {(user, error) in
-            if let error = error {
-                print(error)
-            }
-            else {
-                print("me() success.")
-                if let id = user?.id{
-                    self.userinfo.id = id
-                }
-
-                _ = user
-            }
-        }
-        
-
-
-
+//        UserApi.shared.me() {(user, error) in
+//            if let error = error {
+//                print(error)
+//            }
+//            else {
+//                print("me() success.")
+//                if let id = user?.id{
+//                    self.userinfo.id = id
+//                }
+//                _ = user
+//            }
+//        }
+    }
+    
+    func userInformationSetting(){
     }
     
     
     
     @objc func kakaoLoginButtonTouched(){
         kakaoLogin()
-
-        
     }
 
     @objc func handleAppleSignInButton() {
@@ -169,6 +154,7 @@ class LogInViewController: UIViewController {
         controller.delegate = self as ASAuthorizationControllerDelegate
         controller.presentationContextProvider = self as? ASAuthorizationControllerPresentationContextProviding
         controller.performRequests()
+        
     }
 
     override func viewDidLoad() {
@@ -203,12 +189,10 @@ class LogInViewController: UIViewController {
 
         
         let userSignUpInfo = [
-            "authToken": authToken,
-            "nickName": self.userinfo.nickName,
-            "role": self.userinfo.role
+            "authToken": authToken
+//            "nickName": self.userinfo.nickName,
+//            "role": self.userinfo.role
         ] as Dictionary
-        
-        print("userSignUpInfo : \(userSignUpInfo)")
         
         do {
             try request.httpBody = JSONSerialization.data(withJSONObject: userSignUpInfo, options:[])
@@ -219,20 +203,32 @@ class LogInViewController: UIViewController {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
 
-
-
-        AF.request(request).responseString{ (response) in
+        AF.request(request).responseJSON{ (response) in
             switch response.result {
             case .success:
-                print("1111111111")
                 print(response.result)
             case .failure(let error):
-                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                print(error)
             }
+            guard let data = response.data else { return }
+            let decoder = JSONDecoder()
+            guard let model = try? decoder.decode(UserInfomation.self, from: data) else { return }
+            self.userDefaults.setToken(token: model.jwt)
+            self.userinfo.id = model.user.id
+            self.userinfo.nickName = model.user.nickName
+            self.userinfo.role = model.user.role
+            self.goToMain()
+
+            
         }
 
     }
-
+    func goToMain(){
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "main")
+        vc?.modalPresentationStyle = .fullScreen
+        vc?.modalTransitionStyle = .crossDissolve
+        self.present(vc!, animated: true, completion: nil)
+    }
 
 }
 
@@ -248,6 +244,7 @@ extension LogInViewController: ASAuthorizationControllerDelegate {
             print("IdentityToken : \(identityTokenString)")
             self.userLoginAPICall(type: "apple", authToken: identityTokenString)
             self.userDefaults.setToken(token: identityTokenString)
+            self.userDefaults.setUserType(Type: "apple")
             
         }
         

@@ -12,13 +12,13 @@ struct PermissionRegionList: Codable {
 }
 
 struct PermissionRegion: Codable {
-    let regionName: String?
+    let regionName: String
     let regionType: Int?
     let city: String?
     let town: String?
     let roadAddress: String?
     let postAddress: String?
-    let geoLocation: Geocode?
+    let geoLocation: Geocode
     let capacity: Int?
     let cost: String?
     let permissionStartDate: String?
@@ -37,12 +37,12 @@ struct PermissionRegion: Codable {
     
 
 struct Geocode: Codable{
-    let lat: Double?
-    let lon: Double?
-//    enum CodingKeys : String, CodingKey {
-//        case lat
-//        case lng = "lon"
-//    }
+    let lat: Double
+    let lng: Double
+    enum CodingKeys : String, CodingKey {
+        case lat
+        case lng = "lon"
+    }
 }
 
 struct FestivalRegion: Codable {

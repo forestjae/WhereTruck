@@ -8,13 +8,13 @@
 import UIKit
 import Lottie
 import Then
+import Alamofire
+
+
 
 class LogoViewController: UIViewController {
-    
-    
+ 
     let userDefaults: UserDefaultsValue = UserDefaultsValue()
-    
-    
     
     let logoView = AnimationView(name:"43354-food-truck").then {
         $0.autoresizingMask = [.flexibleHeight, .flexibleWidth]
@@ -34,7 +34,38 @@ class LogoViewController: UIViewController {
         
     }
     
-    func checkMembership(){
+    static func checkToken(){
+        
+    }
+    
+    static func checkMembership(type: String, authToken: String){
+            let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/login/\(type)"
+            var request = URLRequest(url: URL(string: url)!)
+            request.httpMethod = "PUT"
+            
+            let userSignUpInfo = [
+                "authToken": authToken,
+                ] as Dictionary
+            
+            do {
+                try request.httpBody = JSONSerialization.data(withJSONObject: userSignUpInfo, options:[])
+            } catch {
+                print("http Body Error")
+            }
+
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+
+            AF.request(request).responseString{ (response) in
+                switch response.result {
+                case .success:
+                    print(response.result)
+                case .failure(let error):
+                    print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                }
+            }
+
+        
         
         
         

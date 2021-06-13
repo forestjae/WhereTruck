@@ -29,6 +29,14 @@ struct UserDefaultsValue {
         return self.userInformation.string(forKey: UserDefaultsValue.KEY_TOKEN) ?? ""
     }
     
+    func setUserId(id: String) {
+        self.userInformation.set(id, forKey: UserDefaultsValue.KEY_USER_ID)
+    }
+    
+    func getUserId() -> String {
+        self.userInformation.string(forKey: UserDefaultsValue.KEY_USER_ID) ?? ""
+    }
+    
     func setUserType(Type: String) {
         self.userInformation.set(Type, forKey: UserDefaultsValue.KEY_USER_TYPE)
     }

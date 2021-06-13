@@ -9,7 +9,8 @@ import UIKit
 
 class MyInfoViewController: UIViewController {
     
-
+    let userinfo = UserInfo.shared
+    let userDefaults = UserDefaultsValue()
     
     
     let nickNameButton = UIButton().then {
@@ -51,6 +52,13 @@ class MyInfoViewController: UIViewController {
         $0.text = "나의 트럭"
         $0.textColor = .black
         $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+    }
+    
+    let truckConfigButton = UIButton().then {
+        $0.setTitle("관리하기", for: .normal)
+        $0.setTitleColor(UIColor(red: 200/255, green: 100/255, blue: 7/255, alpha: 1.0), for: .normal)
+        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+        
     }
     
     let truckNameLabel = UILabel().then {
@@ -100,7 +108,36 @@ class MyInfoViewController: UIViewController {
     }
     
     
+    @objc func goToTruckConfig(){
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "truckconfig")
+        vc?.modalPresentationStyle = .fullScreen
+        vc?.modalTransitionStyle = .crossDissolve
+        self.present(vc!, animated: true, completion: nil)
+    }
     
+//    var truck: Truck
+//    
+//    func getTruckInfo(){
+//        let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/save"
+//        let jwt = userDefaults.getToken()
+//        let headers: HTTPHeaders = [
+//            "jwt": jwt
+//          ]
+//        let truckInfo = [
+//            "name": self.truckName,
+//            "description": self.truckDescription
+//        ] as Dictionary
+//        print(truckInfo)
+//        print(1111)
+//        AF.request(url, method: .post, parameters: truckInfo, encoding: JSONEncoding.default, headers: headers).responseJSON{ (response) in
+//            switch response.result {
+//            case .success:
+//                print(response.result)
+//            case .failure(let error):
+//                print(error)
+//            }
+//    }
+//    }
     
     func bindConstraints() {
         
@@ -125,6 +162,12 @@ class MyInfoViewController: UIViewController {
         truckLabel.snp.makeConstraints{ (make) in
             make.top.equalTo(nickNameContainer.snp.bottom).offset(10)
             make.left.equalToSuperview().offset(24)
+            
+        }
+        
+        truckConfigButton.snp.makeConstraints{ (make) in
+            make.top.equalTo(nickNameContainer.snp.bottom).offset(10)
+            make.right.equalToSuperview().offset(-20)
             
         }
         
@@ -193,6 +236,7 @@ class MyInfoViewController: UIViewController {
     let item: [String] = ["abc", "def", "ghi", "dasf"]
     override func viewDidLoad() {
         super.viewDidLoad()
+    
         view.addSubview(reviewTableView)
         reviewTableView.delegate = self
         reviewTableView.dataSource = self
@@ -209,6 +253,7 @@ class MyInfoViewController: UIViewController {
         
         view.addSubview(truckContainer)
         view.addSubview(truckLabel)
+        view.addSubview(truckConfigButton)
         view.addSubview(truckNameLabel)
         view.addSubview(truckImage)
         view.addSubview(truckStatusLabel)
@@ -219,7 +264,10 @@ class MyInfoViewController: UIViewController {
 
         
         
+        
         bindConstraints()
+        
+        self.truckConfigButton.addTarget(self, action: #selector(goToTruckConfig), for: .touchUpInside)
     }
 
     

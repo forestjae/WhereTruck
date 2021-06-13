@@ -8,19 +8,20 @@
 import Foundation
 
 struct UserInfomation: Decodable {
-    let user: User
     let jwt: String
+    let user: User
+
 }
 
 struct User: Decodable {
     let id: String
     let nickName: String
     let role: String
-    let favorites: [Favorite]
+//    let favorites: [Favorite]?
 }
 
 struct Favorite: Decodable {
-    let favorite: String
+    let favorite: String?
 }
 
 
