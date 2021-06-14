@@ -47,9 +47,6 @@ class MyTruckInfoViewController: UIViewController {
         
     }
     
-    let myMenuTable = UITableView().then {
-        
-    }
     
     func bindConstraint(){
         myTruckLabel.snp.makeConstraints{ make in
