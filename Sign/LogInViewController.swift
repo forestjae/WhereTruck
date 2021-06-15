@@ -13,23 +13,13 @@ import Alamofire
 import AuthenticationServices
 import Lottie
 
-class UserInfo {
-    static let shared = UserInfo()
-    
-    var id: String = ""
-    var nickName: String = ""
-    var role: String = ""
-    var accessToken: String?
-    
-    private init() { }
-}
 
 
 class LogInViewController: UIViewController {
     
     
     let userDefaults: UserDefaultsValue = UserDefaultsValue()
-    let userinfo = UserInfo.shared
+    let userInfo = UserInfo.shared
     
     let appleLoginButton = ASAuthorizationAppleIDButton(type: .signIn, style: .whiteOutline).then {
         $0.cornerRadius = 5
@@ -98,15 +88,12 @@ class LogInViewController: UIViewController {
                 else {
                     print("loginWithKakaoTalk() success.")
                     if let token = oauthToken?.accessToken{
-                        self.userinfo.accessToken = token
-                        if let accessToken = self.userinfo.accessToken {
-                            
-                            print("accessToken : \(accessToken)")
+                        self.userInfo.accessToken = token
+                        if let accessToken = self.userInfo.accessToken {
                             self.userLoginAPICall(type: "kakao", authToken: accessToken)
                             self.userDefaults.setUserType(Type: "kakao")
                         }
                     }
-                    
                     //do something
                     _ = oauthToken
                 }
@@ -214,10 +201,15 @@ class LogInViewController: UIViewController {
             let decoder = JSONDecoder()
             guard let model = try? decoder.decode(UserInfomation.self, from: data) else { return }
             self.userDefaults.setToken(token: model.jwt)
-            self.userinfo.id = model.user.id
-            self.userinfo.nickName = model.user.nickName
-            self.userinfo.role = model.user.role
-            self.goToMain()
+            self.userInfo.id = model.user.id
+            self.userInfo.nickName = model.user.nickName
+            self.userInfo.role = model.user.role
+            if self.userInfo.nickName != "" {
+                self.goToMain()
+            }
+            else {
+                self.goToSign()
+            }
 
             
         }
@@ -225,6 +217,13 @@ class LogInViewController: UIViewController {
     }
     func goToMain(){
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "main")
+        vc?.modalPresentationStyle = .fullScreen
+        vc?.modalTransitionStyle = .crossDissolve
+        self.present(vc!, animated: true, completion: nil)
+    }
+    
+    func goToSign(){
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "sign")
         vc?.modalPresentationStyle = .fullScreen
         vc?.modalTransitionStyle = .crossDissolve
         self.present(vc!, animated: true, completion: nil)

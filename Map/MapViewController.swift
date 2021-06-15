@@ -19,6 +19,9 @@ class MapViewController: UIViewController {
         return naverMapView.mapView
     }
     
+    let userDefaults = UserDefaultsValue()
+    
+    
     let addressTextField = UITextField()
     let locationManager = CLLocationManager()
     var geoCodeToUse: (lat: Double, lng: Double) = (0.0,0.0)
@@ -171,8 +174,10 @@ class MapViewController: UIViewController {
     var permissionRegions: [PermissionRegion] = []
     
     func permissionRegionAllAPICall(){
+        let jwt = userDefaults.getToken()
+        
         let headers: HTTPHeaders = [
-            "jwt": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMDA2MTIuY2I3OThjNjQ3ZTcwNDkyZGFmOTQ5YTkzYmRiMzhjYjQuMDMyNyIsImlhdCI6MTYyMzQ4NDM2OCwiZXhwIjoxNjIzNTcwNzY4fQ.xK5ec8s4zWknh2Yvlp-pXh0useEuMM42lquqDii21uI"
+            "jwt": jwt
           ]
         AF.request("http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/region/all", encoding: URLEncoding.default, headers: headers).responseJSON { [weak self] response in
   
@@ -180,8 +185,9 @@ class MapViewController: UIViewController {
             let decoder = JSONDecoder()
  
             guard let model = try? decoder.decode(PermissionRegionList.self, from: data) else { return }
-
+            print("aaaaaaaaaaaaa")
             self?.permissionRegions = model.docs
+            
             
         }
 }
@@ -207,6 +213,8 @@ class MapViewController: UIViewController {
     }
     
     func permissionRegionMarkerDraw(){
+        
+        print(11111)
 
         DispatchQueue.global(qos: .default).async {
             // 백그라운드 스레드
@@ -284,6 +292,8 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(userDefaults.getToken())
         
         self.naverMapView.mapView.addCameraDelegate(delegate: self)
 
