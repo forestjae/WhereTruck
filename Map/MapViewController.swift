@@ -20,6 +20,7 @@ class MapViewController: UIViewController {
     }
     
     let userDefaults = UserDefaultsValue()
+    let userInfo = UserInfo.shared
     
     
     let addressTextField = UITextField()
@@ -292,8 +293,7 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(userDefaults.getToken())
+
         
         self.naverMapView.mapView.addCameraDelegate(delegate: self)
 
@@ -317,6 +317,8 @@ class MapViewController: UIViewController {
         
         
         dropDown.dataSource = ["5Km", "10Km", "20Km"]
+        
+        print("id: \(userInfo.id) / nickName:\(userInfo.nickName) / role:\(userInfo.role)")
         
         // Do any additional setup after loading the view.
     }

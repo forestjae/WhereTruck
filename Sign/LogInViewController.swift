@@ -88,13 +88,10 @@ class LogInViewController: UIViewController {
                 else {
                     print("loginWithKakaoTalk() success.")
                     if let token = oauthToken?.accessToken{
-                        self.userInfo.accessToken = token
-                        if let accessToken = self.userInfo.accessToken {
-                            self.userLoginAPICall(type: "kakao", authToken: accessToken)
+                            self.userLoginAPICall(type: "kakao", authToken: token)
                             self.userDefaults.setUserType(Type: "kakao")
-                        }
                     }
-                    //do something
+                    //do somethin
                     _ = oauthToken
                 }
             }
@@ -199,11 +196,14 @@ class LogInViewController: UIViewController {
             }
             guard let data = response.data else { return }
             let decoder = JSONDecoder()
+            print("111")
             guard let model = try? decoder.decode(UserInfomation.self, from: data) else { return }
+            print("222")
             self.userDefaults.setToken(token: model.jwt)
             self.userInfo.id = model.user.id
-            self.userInfo.nickName = model.user.nickName
-            self.userInfo.role = model.user.role
+            self.userInfo.nickName = model.user.nickName ?? ""
+            self.userInfo.role = model.user.role ?? ""
+            print("UserNickName : \(self.userInfo.nickName)")
             if self.userInfo.nickName != "" {
                 self.goToMain()
             }
@@ -242,7 +242,6 @@ extension LogInViewController: ASAuthorizationControllerDelegate {
             guard let identityTokenString = String(data: identityToken, encoding: .utf8) else { return }
             print("IdentityToken : \(identityTokenString)")
             self.userLoginAPICall(type: "apple", authToken: identityTokenString)
-            self.userDefaults.setToken(token: identityTokenString)
             self.userDefaults.setUserType(Type: "apple")
             
         }

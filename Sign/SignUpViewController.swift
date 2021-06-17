@@ -15,61 +15,67 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var selectRoleSegmentedControl: UISegmentedControl!
     @IBOutlet weak var signUpButton: UIButton!
     
-    enum userType {
-        case turckOwner
-        case customer
+    var userType: String = "USER"
+    
+    @IBAction private func touchUpSignUpButton(_ sender: UIButton) {
+        
+        if let nickName = nickNameTextField.text {
+            userSignUpAPICall(nickName: nickName, role: self.userType)
+        }
     }
     
-//    @IBAction private func touchUpSignUpButton(_ sender: UIButton) {
-//        userinfo.nickName = nickNameTextField.text
-//        
-//        if let nickName = userinfo.nickName {
-//            userSignUpAPICall(nickName: nickName, userType: .turckOwner )
-//        }
-//    }
-//    
-//    @IBAction private func touchUpSegementedControl(_sender: UISegmentedControl) {
-//        switch
-//        
-//    }
+    @objc func indexChanged(_ sender: UISegmentedControl) {
+        if selectRoleSegmentedControl.selectedSegmentIndex == 0 {
+            userType = "USER"
+        }
+        
+        else {
+            userType = "OWNER"
+        }
+        
+    }
+    let userDefaluts = UserDefaultsValue()
+    let userInfo = UserInfo.shared
     
-    let userinfo = UserInfo.shared
-    var userType: userType = .customer
-    
-    private func userSignUpAPICall(nickName: String, userType: userType) {
+    private func userSignUpAPICall(nickName: String, role: String) {
+        let urlNickName = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/user/nickname"
+        let urlRole = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/user/role"
+
+        print(nickName)
+        print(role)
         
-        let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/user/save"
-        var request = URLRequest(url: URL(string: url)!)
-        request.httpMethod = "POST"
+        let jwtHeader: HTTPHeaders = [
+            "jwt": userDefaluts.getToken()
+        ] 
         
-        let id = String(userinfo.id)
-        
-        let userSignUpInfo = [
-            "id": id,
+        let userSignUpInfoNickName = [
             "nickName": nickName
         ] as Dictionary
         
-        do {
-            try request.httpBody = JSONSerialization.data(withJSONObject: userSignUpInfo, options:[])
-        } catch {
-            print("http Body Error")
-        }
+        let userSignUpInfoRole = [
+            "role": role
+        ] as Dictionary
         
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-
-
         
-        AF.request(request).responseString{ (response) in
+        AF.request(urlNickName, method: .put, parameters: userSignUpInfoNickName, encoding: JSONEncoding.default, headers: jwtHeader).responseJSON { response in
             switch response.result {
             case .success:
                 print(response.result)
             case .failure(let error):
-                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                print(error)
+            }
+        }
+        AF.request(urlRole, method: .put,parameters: userSignUpInfoRole, encoding: JSONEncoding.default, headers: jwtHeader).responseJSON { response in
+            switch response.result {
+            case .success:
+                print(response.result)
+            case .failure(let error):
+                print(error)
             }
         }
 
     }
+    
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         enableButtonWhenAllFactorCompleted()
@@ -88,10 +94,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+   
         nickNameTextField.delegate = self
         signUpButton.isUserInteractionEnabled = false
         signUpButton.setTitleColor(.gray, for: .normal)
+        selectRoleSegmentedControl.addTarget(self, action: #selector(indexChanged(_:)), for: .valueChanged)
         
         
         // Do any additional setup after loading the view.

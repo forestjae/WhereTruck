@@ -15,14 +15,10 @@ struct UserInfomation: Decodable {
 
 struct User: Decodable {
     let id: String
-    let nickName: String
-    let role: String
-//    let favorites: [Favorite]?
+    let nickName: String?
+    let role: String?
 }
 
-struct Favorite: Decodable {
-    let favorite: String?
-}
 
 
 

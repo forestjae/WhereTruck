@@ -8,12 +8,12 @@
 import Foundation
 
 class UserInfo {
-    static let shared = UserInfo()
+    static let shared: UserInfo = UserInfo()
     
     var id: String = ""
     var nickName: String = ""
     var role: String = ""
-    var accessToken: String?
+    var accessToken: String = ""
     
     private init() { }
 }

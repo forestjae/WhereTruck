@@ -8,10 +8,9 @@
 import UIKit
 
 class MyInfoViewController: UIViewController {
-    
-    let userinfo = UserInfo.shared
+    let userInfo = UserInfo.shared
     let userDefaults = UserDefaultsValue()
-    
+
     
     let nickNameButton = UIButton().then {
         $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 15)
@@ -20,7 +19,7 @@ class MyInfoViewController: UIViewController {
         $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         $0.setTitleColor(.black, for: .normal)
         $0.tintColor = .black
-        $0.setTitle("이승재님, 안녕하세요", for: .normal)
+        $0.setTitle("\(UserInfo.shared.nickName)님, 안녕하세요", for: .normal)
     }
     
     let configButton = UIButton().then {
@@ -53,6 +52,14 @@ class MyInfoViewController: UIViewController {
         $0.textColor = .black
         $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
     }
+    
+    let menuLabel = UILabel().then {
+        $0.text = "나의 메뉴"
+        $0.textColor = .black
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+    }
+    
+
     
     let truckConfigButton = UIButton().then {
         $0.setTitle("관리하기", for: .normal)
@@ -115,29 +122,6 @@ class MyInfoViewController: UIViewController {
         self.present(vc!, animated: true, completion: nil)
     }
     
-//    var truck: Truck
-//    
-//    func getTruckInfo(){
-//        let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/save"
-//        let jwt = userDefaults.getToken()
-//        let headers: HTTPHeaders = [
-//            "jwt": jwt
-//          ]
-//        let truckInfo = [
-//            "name": self.truckName,
-//            "description": self.truckDescription
-//        ] as Dictionary
-//        print(truckInfo)
-//        print(1111)
-//        AF.request(url, method: .post, parameters: truckInfo, encoding: JSONEncoding.default, headers: headers).responseJSON{ (response) in
-//            switch response.result {
-//            case .success:
-//                print(response.result)
-//            case .failure(let error):
-//                print(error)
-//            }
-//    }
-//    }
     
     func bindConstraints() {
         
@@ -158,7 +142,6 @@ class MyInfoViewController: UIViewController {
         }
         
         
-
         truckLabel.snp.makeConstraints{ (make) in
             make.top.equalTo(nickNameContainer.snp.bottom).offset(10)
             make.left.equalToSuperview().offset(24)
@@ -228,7 +211,15 @@ class MyInfoViewController: UIViewController {
             make.top.equalTo(reviewLabel.snp.bottom).offset(10)
             make.left.equalToSuperview().offset(24)
             make.right.equalToSuperview().offset(-24)
-            make.bottom.equalToSuperview().offset(200)
+            make.bottom.equalToSuperview().offset(300)
+        }
+        
+        menuLabel.snp.makeConstraints{ (make) in
+            make.top.equalTo(reviewTableView.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(24)
+            make.right.equalToSuperview().offset(-24)
+  
+            
         }
     }
     
@@ -262,6 +253,7 @@ class MyInfoViewController: UIViewController {
         view.addSubview(reviewCountLabel)
         view.addSubview(reviewMoreButton)
 
+        view.addSubview(menuLabel)
         
         
         
