@@ -56,8 +56,8 @@ class TruckService {
                         guard let data = response.data else { return }
                         let decoder = JSONDecoder()
                         guard let model = try? decoder.decode(TruckList.self, from: data) else { return }
-                        truck = model.docs[0]
-                        
+                        truck = model.docs[1]
+                        print(1111113)
                         
                         
                         DispatchQueue.main.async {
@@ -72,6 +72,8 @@ class TruckService {
                             truckInfo.starAvg = truck.starAvg
                             guard let url = truck.imageUrl else { return }
                             truckInfo.imageUrl = url
+                            
+                            print("1111\(truckInfo.id)")
                             
                         }
                    

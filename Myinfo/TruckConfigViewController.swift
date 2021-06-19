@@ -10,41 +10,77 @@ import Alamofire
 
 class TruckConfigViewController: UIViewController {
     
-    let truckNameField = UITextField().then {
-        $0.placeholder = "트럭이름을 입력하세요"
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-    }
-    
-    let truckDescriptionField = UITextView().then {
-        $0.textColor = UIColor.black
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-        
-    }
+    let truckInfo = TruckInfo.shared
     
     let truckNameTitleLabel = UILabel().then {
         $0.text = "트럭이름"
         $0.textColor = .black
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
+        $0.numberOfLines = 2
+    
+    }
+    
+    let informationContainer = UIView().then {
+        $0.backgroundColor = UIColor.systemGray6
+        $0.layer.shadowColor = UIColor.black.cgColor
+        $0.layer.shadowOffset = CGSize(width: 0, height: 0.3)
+        $0.layer.shadowOpacity = 0.2
+
+    }
+    
+    let informationLabel = UILabel().then {
+        $0.text = "내 트럭 정보를 수정할 수 있습니다. \n정보를 입력하시고 완료버튼을 클릭해주세요"
+        $0.textColor = .systemGray
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 15)
+        $0.numberOfLines = 2
         
+    }
+    
+    let truckNameField = UITextField().then {
+        $0.placeholder = "트럭이름을 입력하세요"
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 18)
+        $0.layer.borderWidth = 1.0
+        $0.layer.borderColor = UIColor.systemPink.cgColor
+        $0.layer.cornerRadius = 8
+        $0.textColor = UIColor.black
     }
     
     let truckDescriptionTitleLabel = UILabel().then {
         $0.text = "트럭설명"
         $0.textColor = .black
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         
     }
+    
+    let truckDescriptionField = UITextView().then {
+        $0.textColor = UIColor.black
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 18)
+        $0.text = "설명을 입력하세요"
+        $0.contentInset = UIEdgeInsets(top: 8, left: 5, bottom: 10, right: 0)
+        $0.backgroundColor = .clear
+        $0.returnKeyType = .done
+        $0.layer.cornerRadius = 8
+        $0.layer.borderWidth = 1.0
+        $0.layer.borderColor = UIColor.systemPink.cgColor
+
+        
+        
+    }
+    
     
     let truckImageTitleLabel = UILabel().then {
         $0.text = "트럭대표사진"
         $0.textColor = .black
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
         
     }
     
     let myTruckImage = UIImageView().then {
         $0.image = UIImage.init(named: "truck_example")
-        
+        $0.layer.cornerRadius = 15.0
+        $0.layer.shadowColor = UIColor.black.cgColor
+        $0.layer.shadowOffset = CGSize(width: 1.5, height: 1)
+        $0.layer.shadowOpacity = 0.5
     }
 
     
@@ -72,32 +108,77 @@ class TruckConfigViewController: UIViewController {
     
     func bindConstraint() {
         
+        truckNameField.text = truckInfo.name
+        truckDescriptionField.text = truckInfo.description
+        
+        self.informationContainer.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(90)
+            make.left.right.equalToSuperview().offset(0)
+            make.height.equalTo(53)
+        }
+        
+        self.informationLabel.snp.makeConstraints { make in
+            make.top.equalTo(informationContainer.snp.top).offset(8)
+            make.left.equalToSuperview().offset(22)
+            make.height.equalTo(40)
+        }
+        
+        
         self.truckNameTitleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(0)
+            make.top.equalTo(informationContainer.snp.bottom).offset(15)
             make.left.equalToSuperview().offset(20)
         }
         
         
         
         self.truckNameField.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(20)
+            make.top.equalTo(truckNameTitleLabel.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(26)
+            make.width.equalTo(340)
+            make.height.equalTo(40)
         }
+        
+        self.truckDescriptionTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(truckNameField.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
+        }
+        
         
         self.truckDescriptionField.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(truckNameField.snp.bottom).offset(10)
+            make.top.equalTo(truckDescriptionTitleLabel.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(26)
+            make.width.equalTo(340)
+            make.height.equalTo(170)
         }
         
-        self.initTruckButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(truckDescriptionField.snp.bottom).offset(10)
+        self.truckImageTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(truckDescriptionField.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
         }
+        
+        self.myTruckImage.snp.makeConstraints { make in
+            make.top.equalTo(truckImageTitleLabel.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(20)
+            make.width.height.equalTo(100)
+        }
+        
+//        self.initTruckButton.snp.makeConstraints { make in
+//            make.top.equalTo(myTruckImage.snp.bottom).offset(10)
+//            make.left.equalToSuperview().offset(20)
+//        }
         
         self.getAllTruckButton.snp.makeConstraints{ make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(initTruckButton.snp.bottom).offset(10)
+            make.top.equalTo(myTruckImage.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(20)
         }
+        
+//        DispatchQueue.main.async {
+//            
+//            let url = URL(string: self.truckInfo.imageUrl)
+//            guard let url = url else { return }
+//            self.myTruckImage.kf.setImage(with: url)
+//      
+//        }
     }
     
     
@@ -106,6 +187,22 @@ class TruckConfigViewController: UIViewController {
     
     let userDefaults: UserDefaultsValue = UserDefaultsValue()
     let userInfo = UserInfo.shared
+    
+    lazy var editBarButton: UIBarButtonItem = {
+        let barButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(didCompleteButtonTouched(_:)))
+        return barButtonItem
+    }()
+
+    @objc func didCompleteButtonTouched(_ sender: UIBarButtonItem) {
+        modifyTruck()
+        print("11")
+        
+        
+    }
+
+    func navigationButtonSetup(){
+        navigationItem.rightBarButtonItem = editBarButton
+    }
     
     @objc func initTruck(){
         self.truckName = truckNameField.text!
@@ -130,6 +227,51 @@ class TruckConfigViewController: UIViewController {
     }
     }
     
+    
+    
+    @objc func modifyTruck(){
+        self.truckName = truckNameField.text!
+        self.truckDescription = truckDescriptionField.text!
+        let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck"
+    
+        let jwt = userDefaults.getToken()
+        let headers: HTTPHeaders = [
+            "jwt": jwt,
+            "Content-Type": "multipart/form-data"
+          ]
+//        let truckInfo = [
+//            "id": self.truckInfo.id,
+//            "name": self.truckName,
+//            "description": self.truckDescription
+//        ] as Dictionary
+        
+        AF.upload(multipartFormData: { (multipartFormData) in
+            
+            multipartFormData.append(Data(self.truckInfo.id.utf8), withName: "id")
+            multipartFormData.append(Data(self.truckName.utf8), withName: "name")
+            multipartFormData.append(Data(self.truckDescription.utf8), withName: "description")
+            guard let imageData = self.myTruckImage.image!.jpegData(compressionQuality: 0.1) else {return}
+            multipartFormData.append(imageData, withName: "image", fileName: "imagename.jpg", mimeType: "image/jpeg")
+            
+            
+            
+            
+        }, to: url, headers: headers).responseJSON { (response) in
+            print("3333")
+            print(response.result)
+            guard let statusCode = response.response?.statusCode else { return }
+            
+            switch statusCode {
+            case 200:
+                print("트럭 변경 성공")
+            default:
+                print("트럭 변경 실패")
+                break
+            }
+        }
+    }
+    
+    
     @objc func getAllTruck(){
         let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/all"
         let jwt = userDefaults.getToken()
@@ -151,6 +293,8 @@ class TruckConfigViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addSubview(informationContainer)
+        self.view.addSubview(informationLabel)
         
         self.view.addSubview(truckNameTitleLabel)
         self.view.addSubview(truckNameField)
@@ -159,10 +303,13 @@ class TruckConfigViewController: UIViewController {
         self.view.addSubview(truckImageTitleLabel)
         self.view.addSubview(myTruckImage)
         
+        self.view.addSubview(initTruckButton)
         self.view.addSubview(getAllTruckButton)
         initTruckButton.addTarget(self, action: #selector(initTruck), for: .touchUpInside)
         getAllTruckButton.addTarget(self, action: #selector(getAllTruck), for: .touchUpInside)
+        
         bindConstraint()
+        navigationButtonSetup()
         // Do any additional setup after loading the view.
     }
     

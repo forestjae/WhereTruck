@@ -52,11 +52,8 @@ class MyTruckViewController: UIViewController {
         $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 20)
     }
     
-    
     func bindConstraint(){
         
-
-
         myTruckContainer.snp.makeConstraints{ (make) in
             make.top.equalToSuperview().offset(100)
             make.height.equalTo(120)
@@ -72,7 +69,6 @@ class MyTruckViewController: UIViewController {
 
         }
         
-      
 
 
         myTruckImage.snp.makeConstraints{ (make) in
@@ -136,7 +132,7 @@ class MyTruckViewController: UIViewController {
             let url = URL(string: self.truckInfo.imageUrl)
             guard let url = url else { return }
             self.myTruckImage.kf.setImage(with: url)
-            print("111:\(url)")
+            
             
             self.view.addSubview(self.myTruckContainer)
             self.view.addSubview(self.myTruckNameContentsLabel)
@@ -144,19 +140,18 @@ class MyTruckViewController: UIViewController {
             self.view.addSubview(self.myTruckDescriptionLabel)
             self.view.addSubview(self.myTruckStatusLabel)
             self.view.addSubview(self.myTruckImage)
+            
             self.bindConstraint()
       
         }
                 
 
-                
-          
-        
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("111111:\(self.truckInfo.name)")
         navigationButtonSetup()
         setUpView()
         

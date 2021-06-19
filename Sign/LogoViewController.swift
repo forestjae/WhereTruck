@@ -107,8 +107,6 @@ class LogoViewController: UIViewController {
         
         else {
             let type = userDefaults.getUserType()
-            print(type)
-            print(token)
             checkMembership(type: type, authToken: token)
         }
     }
