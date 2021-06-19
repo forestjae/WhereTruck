@@ -38,61 +38,7 @@ class MyInfoViewController: UIViewController {
         //        $0.layer.shadowOffset = CGSize(width: 2, height: 2)
         //        $0.layer.shadowOpacity = 0.1
     }
-    
-//    let myTruckLabel = UILabel().then {
-//        $0.text = "내 트럭"
-//        $0.textColor = .black
-//        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-//    }
-//
-//    let
-    
-//    let truckContainer = UIView().then {
-//        $0.backgroundColor = UIColor(red: 200/255, green: 215/255, blue: 217/255, alpha: 1.0)
-//        $0.layer.cornerRadius = 3
-//        //        $0.layer.shadowColor = UIColor.black.cgColor
-//        //        $0.layer.shadowOffset = CGSize(width: 2, height: 2)
-//        //        $0.layer.shadowOpacity = 0.1
-//    }
-//
-//    let truckLabel = UILabel().then {
-//        $0.text = "나의 트럭"
-//        $0.textColor = .black
-//        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-//    }
-//
-//    let menuLabel = UILabel().then {
-//        $0.text = "나의 메뉴"
-//        $0.textColor = .black
-//        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-//    }
-//
-//
-//
-//    let truckConfigButton = UIButton().then {
-//        $0.setTitle("관리하기", for: .normal)
-//        $0.setTitleColor(UIColor(red: 200/255, green: 100/255, blue: 7/255, alpha: 1.0), for: .normal)
-//        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
-//
-//    }
-//
-//    let truckNameLabel = UILabel().then {
-//        $0.text = "창걸이네 삼겹살"
-//        $0.textColor = .black
-//        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-//    }
-//
-//    let truckImage = UIImageView().then {
-//        $0.image = UIImage.init(named: "truck_example")
-//
-//    }
-//
-//    let truckStatusLabel = UILabel().then {
-//        $0.text = "현재 운영 중"
-//        $0.textColor = .systemBlue
-//        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 20)
-//    }
-//
+
     let reviewLabel = UILabel().then {
         $0.text = "내가 쓴 리뷰"
         $0.textColor = .black
@@ -119,16 +65,15 @@ class MyInfoViewController: UIViewController {
         $0.rowHeight = UITableView.automaticDimension
         $0.showsVerticalScrollIndicator = false
         $0.isScrollEnabled = false
-        
-    }
+            }
     
     
-    @objc func goToTruckConfig(){
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "truckconfig")
-        vc?.modalPresentationStyle = .fullScreen
-        vc?.modalTransitionStyle = .crossDissolve
-        self.present(vc!, animated: true, completion: nil)
-    }
+//    @objc func goToTruckConfig(){
+//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "truckconfig")
+//        vc?.modalPresentationStyle = .fullScreen
+//        vc?.modalTransitionStyle = .crossDissolve
+//        self.present(vc!, animated: true, completion: nil)
+//    }
     
     
     func bindConstraints() {
@@ -149,52 +94,14 @@ class MyInfoViewController: UIViewController {
             make.right.equalTo(nickNameContainer.snp.right).offset(-13)
         }
         
-//
-//        truckLabel.snp.makeConstraints{ (make) in
-//            make.top.equalTo(nickNameContainer.snp.bottom).offset(10)
-//            make.left.equalToSuperview().offset(24)
-//
-//        }
-//
-//        truckConfigButton.snp.makeConstraints{ (make) in
-//            make.top.equalTo(nickNameContainer.snp.bottom).offset(10)
-//            make.right.equalToSuperview().offset(-20)
-//
-//        }
-//
-//        truckContainer.snp.makeConstraints{ (make) in
-//            make.top.equalTo(truckLabel.snp.bottom).offset(10)
-//            make.height.equalTo(120)
-//            make.left.equalToSuperview().offset(25)
-//            make.right.equalToSuperview().offset(-25)
-//
-//
-//        }
-//
-//
-//        truckNameLabel.snp.makeConstraints{ (make) in
-//            make.top.equalTo(truckContainer.snp.top).offset(10)
-//            make.left.equalTo(truckImage.snp.right).offset(10)
-//
-//
-//
-//        }
-//
-//
-//        truckImage.snp.makeConstraints{ (make) in
-//            make.top.equalTo(truckContainer.snp.top).offset(10)
-//            make.left.equalTo(truckContainer.snp.left).offset(10)
-//
-//            make.width.height.equalTo(100)
-//
-//        }
-//
-//        truckStatusLabel.snp.makeConstraints{ (make) in
-//            make.centerX.equalTo(truckNameLabel.snp.centerX)
-//            make.centerY.equalTo(truckImage.snp.centerY)
-//        }
-//
-
+        reviewTableView.snp.makeConstraints{ (make) in
+        
+            make.top.equalTo(nickNameContainer.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(0)
+            make.right.equalToSuperview().offset(0)
+            make.bottom.equalToSuperview().offset(10)
+        }
+        
         
 //        reviewLabel.snp.makeConstraints{ (make) in
 //            make.top.equalTo(truckContainer.snp.bottom).offset(10)
@@ -214,14 +121,6 @@ class MyInfoViewController: UIViewController {
 //            make.right.equalToSuperview().offset(0)
 //
 //        }
-//
-        reviewTableView.snp.makeConstraints{ (make) in
-        
-            make.top.equalTo(nickNameContainer.snp.bottom).offset(10)
-            make.left.equalToSuperview().offset(0)
-            make.right.equalToSuperview().offset(0)
-            make.bottom.equalToSuperview().offset(10)
-        }
         
 //        menuLabel.snp.makeConstraints{ (make) in
 //            make.top.equalTo(reviewTableView.snp.bottom).offset(10)
@@ -271,7 +170,12 @@ class MyInfoViewController: UIViewController {
         
         bindConstraints()
         
-//        self.truckConfigButton.addTarget(self, action: #selector(goToTruckConfig), for: .touchUpInside)
+        self.configButton.addTarget(self, action: #selector(membershipConfigButtonTouched(_:)), for: .touchUpInside)
+    }
+    
+    @objc func membershipConfigButtonTouched(_ sender: UIButton){
+            guard let MyMembershipViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: "MyMembershipViewController") as? MyMembershipViewController else { return }
+            navigationController?.pushViewController(MyMembershipViewController, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -287,7 +191,7 @@ class MyInfoViewController: UIViewController {
 
     let cellIdentifier: String = "cell"
     
-    let myInfoMenuList = ["내 정보", "내 트럭", "내 메뉴"]
+    let myInfoMenuList = ["내 트럭", "내 메뉴"]
     
 }
 
@@ -304,7 +208,7 @@ extension MyInfoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 3
+            return 2
         case 1:
             return 4
         default:
@@ -376,20 +280,16 @@ extension MyInfoViewController: UITableViewDelegate, UITableViewDataSource {
         
 
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         
         switch indexPath.row {
         case 0:
-            print("touch 0 row")
-            guard let MyMembershipViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: "MyMembershipViewController") as? MyMembershipViewController else { return }
-            print(11)
-            navigationController?.pushViewController(MyMembershipViewController, animated: true)
-        case 1:
+            
             guard let MyTruckViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: "MyTruckViewController") as? MyTruckViewController else { return }
             navigationController?.pushViewController(MyTruckViewController, animated: true)
-        case 2:
+        case 1:
             guard let MyMenuViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: "MyMenuViewController") as? MyMenuViewController else { return }
             navigationController?.pushViewController(MyMenuViewController, animated: true)
         default:

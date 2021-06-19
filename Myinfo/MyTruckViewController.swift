@@ -6,52 +6,109 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MyTruckViewController: UIViewController {
+
     
+    let truckInfo = TruckInfo.shared
+    
+    let truckClass = TruckService()
+    
+    let userDefaults = UserDefaultsValue()
+
     let myTruckContainer = UIView().then {
         $0.backgroundColor = UIColor(red: 243/255, green: 246/255, blue: 227/255, alpha: 1.0)
         $0.layer.cornerRadius = 10
     }
-    
-    let myTruckLabel = UILabel().then {
-        $0.text = "내 트럭"
-        $0.textColor = .black
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-        
-    }
-    
+
     let myTruckNameTitleLabel = UILabel().then {
-        $0.text = "트럭이름 :"
-        $0.textColor = .black
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-        
+        $0.text = ";"
+        $0.textColor = .systemBlue
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 20)
     }
     
     let myTruckNameContentsLabel = UILabel().then {
-        $0.text = "창걸이네 삼겹살"
-        $0.textColor = .black
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-        
+        $0.text = "창걸네삼겹살"
+        $0.textColor = .systemBlue
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 20)
     }
     
     let myTruckImage = UIImageView().then {
         $0.image = UIImage.init(named: "truck_example")
-        
+        $0.backgroundColor = .systemBlue
+    }
+
+    
+    let myTruckDescriptionLabel = UILabel().then {
+        $0.text = "개맛있는 집입니다111;"
+        $0.textColor = .systemBlue
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 20)
     }
     
-    let myMenuTitleLabel = UILabel().then {
-        $0.text = "나의 트럭"
-        $0.textColor = .black
-        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
-        
+    let myTruckStatusLabel = UILabel().then {
+        $0.text = "현재 운영 중"
+        $0.textColor = .systemBlue
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 20)
     }
     
     
     func bindConstraint(){
-        myTruckLabel.snp.makeConstraints{ make in
+        
+
+
+        myTruckContainer.snp.makeConstraints{ (make) in
+            make.top.equalToSuperview().offset(100)
+            make.height.equalTo(120)
+            make.left.equalToSuperview().offset(25)
+            make.right.equalToSuperview().offset(-25)
+
+        }
+        
+        myTruckNameTitleLabel.snp.makeConstraints{ (make) in
+            make.top.equalTo(myTruckContainer.snp.top).offset(10)
+            make.left.equalTo(myTruckContainer.snp.left).offset(10)
+
+
+        }
+        
+      
+
+
+        myTruckImage.snp.makeConstraints{ (make) in
+            make.top.equalTo(myTruckContainer.snp.top).offset(10)
+            make.left.equalTo(myTruckContainer.snp.left).offset(10)
+
+            make.width.height.equalTo(100)
+
+        }
+        
+        myTruckDescriptionLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(myTruckNameContentsLabel.snp.bottom).offset(10)
+            make.left.equalTo(myTruckImage.snp.right).offset(10)
             
         }
+        
+        myTruckNameContentsLabel.snp.makeConstraints{ (make) in
+            make.top.equalTo(myTruckContainer.snp.top).offset(0)
+            make.left.equalTo(myTruckImage.snp.right).offset(10)
+            
+            
+        }
+        myTruckNameContentsLabel.text = truckInfo.name
+        myTruckDescriptionLabel.text = truckInfo.description
+        
+        
+        
+
+        myTruckStatusLabel.snp.makeConstraints{ (make) in
+            make.top.equalTo(myTruckDescriptionLabel.snp.bottom).offset(5)
+            make.left.equalTo(myTruckImage.snp.right).offset(10)
+        }
+
+
+
+
     }
     
     lazy var editBarButton: UIBarButtonItem = {
@@ -61,15 +118,53 @@ class MyTruckViewController: UIViewController {
 
     @objc func didEditButtonTouched(_ sender: UIBarButtonItem) {
         
+        guard let TruckConfigViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: "TruckConfigViewController") as? TruckConfigViewController else { return }
+        navigationController?.pushViewController(TruckConfigViewController, animated: true)
+        
     }
 
     func navigationButtonSetup(){
         navigationItem.rightBarButtonItem = editBarButton
     }
     
+    func setUpView(){
+        
+ 
+        
+        DispatchQueue.main.async {
+            
+            let url = URL(string: self.truckInfo.imageUrl)
+            guard let url = url else { return }
+            self.myTruckImage.kf.setImage(with: url)
+            print("111:\(url)")
+            
+            self.view.addSubview(self.myTruckContainer)
+            self.view.addSubview(self.myTruckNameContentsLabel)
+            self.view.addSubview(self.myTruckNameTitleLabel)
+            self.view.addSubview(self.myTruckDescriptionLabel)
+            self.view.addSubview(self.myTruckStatusLabel)
+            self.view.addSubview(self.myTruckImage)
+            self.bindConstraint()
+      
+        }
+                
+
+                
+          
+        
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationButtonSetup()
+        setUpView()
+        
+        
+
+    
+        
+        
         
         
         // Do any additional setup after loading the view.

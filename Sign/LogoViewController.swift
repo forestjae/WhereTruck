@@ -39,24 +39,10 @@ class LogoViewController: UIViewController {
     
     func checkMembership(type: String, authToken: String){
         let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/user/me"
-//        var request = URLRequest(url: URL(string: url)!)
-//        request.httpMethod = "GET"
-
         let userSignUpInfo: HTTPHeaders = [
             "jwt": authToken
         ]
-        
-//        do {
-//            try request.httpBody = JSONSerialization.data(withJSONObject: userSignUpInfo, options:[])
-//        } catch {
-//            print("http Body Error")
-//        }
-//
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
         AF.request(url, method: .get, encoding: JSONEncoding.default, headers: userSignUpInfo).responseJSON{ [weak self] (response) in
-            
             switch response.result {
             case .success:
                 if let status = response.response?.statusCode{
@@ -78,23 +64,21 @@ class LogoViewController: UIViewController {
                         print("400 ERROR!")
                     case 500:
                         print("500 ERROR!")
+                        
                         self?.goToLogin()
+                        
+                        
                         
                     default:
                         break
                     }
                 }
             case .failure(let error):
+                self?.userDefaults.clear()
+                self?.goToLogin()
                 print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
             }
-
-
         }
-        
-        
-        
-        
-        
     }
     
     

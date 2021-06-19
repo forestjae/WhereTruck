@@ -12,11 +12,41 @@ class TruckConfigViewController: UIViewController {
     
     let truckNameField = UITextField().then {
         $0.placeholder = "트럭이름을 입력하세요"
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
     }
     
-    let truckDescriptionField = UITextField().then {
-        $0.placeholder = "트럭설명을 입력하세요"
+    let truckDescriptionField = UITextView().then {
+        $0.textColor = UIColor.black
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+        
     }
+    
+    let truckNameTitleLabel = UILabel().then {
+        $0.text = "트럭이름"
+        $0.textColor = .black
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+        
+    }
+    
+    let truckDescriptionTitleLabel = UILabel().then {
+        $0.text = "트럭설명"
+        $0.textColor = .black
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+        
+    }
+    
+    let truckImageTitleLabel = UILabel().then {
+        $0.text = "트럭대표사진"
+        $0.textColor = .black
+        $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 24)
+        
+    }
+    
+    let myTruckImage = UIImageView().then {
+        $0.image = UIImage.init(named: "truck_example")
+        
+    }
+
     
     let initTruckButton = UIButton().then {
         $0.setTitle("트럭생성", for: .normal)
@@ -41,6 +71,14 @@ class TruckConfigViewController: UIViewController {
     
     
     func bindConstraint() {
+        
+        self.truckNameTitleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(0)
+            make.left.equalToSuperview().offset(20)
+        }
+        
+        
+        
         self.truckNameField.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(20)
@@ -113,9 +151,14 @@ class TruckConfigViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(initTruckButton)
-        self.view.addSubview(truckDescriptionField)
+        
+        self.view.addSubview(truckNameTitleLabel)
         self.view.addSubview(truckNameField)
+        self.view.addSubview(truckDescriptionTitleLabel)
+        self.view.addSubview(truckDescriptionField)
+        self.view.addSubview(truckImageTitleLabel)
+        self.view.addSubview(myTruckImage)
+        
         self.view.addSubview(getAllTruckButton)
         initTruckButton.addTarget(self, action: #selector(initTruck), for: .touchUpInside)
         getAllTruckButton.addTarget(self, action: #selector(getAllTruck), for: .touchUpInside)

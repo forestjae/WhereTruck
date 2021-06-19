@@ -284,7 +284,7 @@ class MapViewController: UIViewController {
     
     }
     
-
+    let truckClass = TruckService()
     
     
     func setAddressOnButton(){
@@ -314,7 +314,7 @@ class MapViewController: UIViewController {
         setAddressOnButton()
         self.selectSearchRangeButton.addTarget(self, action: #selector(onTabButton), for: .touchUpInside)
         
-        
+        self.truckClass.getMyTruckFromAPI(authToken: self.userDefaults.getToken())
         
         dropDown.dataSource = ["5Km", "10Km", "20Km"]
         

@@ -200,7 +200,7 @@
         <!--Truck Config View Controller-->
         <scene sceneID="a1I-My-OLA">
             <objects>
-                <viewController storyboardIdentifier="truckconfig" id="3xb-x3-ijl" customClass="TruckConfigViewController" customModule="WhereTruck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TruckConfigViewController" id="3xb-x3-ijl" customClass="TruckConfigViewController" customModule="WhereTruck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ibF-Nh-p33">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -210,7 +210,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Aga-t4-tcX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4813" y="2066"/>
+            <point key="canvasLocation" x="5703" y="2040"/>
         </scene>
         <!--My Membership View Controller-->
         <scene sceneID="nOt-gk-aeM">
@@ -273,7 +273,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="epx-dP-UIf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4058" y="2066"/>
+            <point key="canvasLocation" x="4968" y="2040"/>
         </scene>
         <!--My Menu View Controller-->
         <scene sceneID="LoP-dN-Kl4">

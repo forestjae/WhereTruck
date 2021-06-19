@@ -200,6 +200,7 @@ class LogInViewController: UIViewController {
             guard let model = try? decoder.decode(UserInfomation.self, from: data) else { return }
             print("222")
             self.userDefaults.setToken(token: model.jwt)
+            print(self.userDefaults.getToken())
             self.userInfo.id = model.user.id
             self.userInfo.nickName = model.user.nickName ?? ""
             self.userInfo.role = model.user.role ?? ""
