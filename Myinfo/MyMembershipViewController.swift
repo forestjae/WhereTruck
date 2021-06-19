@@ -1,13 +1,13 @@
 //
-//  MyMenuViewController.swift
+//  MyMembershipViewController.swift
 //  WhereTruck
 //
-//  Created by 이승재 on 2021/06/17.
+//  Created by 이승재 on 2021/06/19.
 //
 
 import UIKit
 
-class MyMenuViewController: UIViewController {
+class MyMembershipViewController: UIViewController {
     
     lazy var editBarButton: UIBarButtonItem = {
         let barButtonItem = UIBarButtonItem(title: "수정", style: .plain, target: self, action: #selector(didEditButtonTouched(_:)))
@@ -21,7 +21,7 @@ class MyMenuViewController: UIViewController {
     func navigationButtonSetup(){
         navigationItem.rightBarButtonItem = editBarButton
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationButtonSetup()
@@ -30,8 +30,9 @@ class MyMenuViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.title = "내 메뉴"
+        navigationItem.title = "내 정보"
     }
+    
 
     /*
     // MARK: - Navigation

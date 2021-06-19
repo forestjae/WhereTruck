@@ -1,13 +1,13 @@
 //
-//  MyMenuConfigViewController.swift
+//  MembershipConfigViewController.swift
 //  WhereTruck
 //
-//  Created by 이승재 on 2021/06/17.
+//  Created by 이승재 on 2021/06/19.
 //
 
 import UIKit
 
-class MyMenuConfigViewController: UIViewController {
+class MembershipConfigViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

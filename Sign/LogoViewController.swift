@@ -59,23 +59,36 @@ class LogoViewController: UIViewController {
             
             switch response.result {
             case .success:
-                print(response.result)
+                if let status = response.response?.statusCode{
+                    switch status {
+                    case 200:
+                        guard let data = response.data else { return }
+                        let decoder = JSONDecoder()
+                        guard let model = try? decoder.decode(User.self, from: data) else { return }
+                        self?.userInfo.id = model.id
+                        self?.userInfo.nickName = model.nickName ?? ""
+                        self?.userInfo.role = model.role ?? ""
+                        if self?.userInfo.nickName != "" {
+                            self?.goToMain()
+                        }
+                        else {
+                            self?.goToSign()
+                        }
+                    case 400:
+                        print("400 ERROR!")
+                    case 500:
+                        print("500 ERROR!")
+                        self?.goToLogin()
+                        
+                    default:
+                        break
+                    }
+                }
             case .failure(let error):
                 print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
             }
 
-            guard let data = response.data else { return }
-            let decoder = JSONDecoder()
-            guard let model = try? decoder.decode(User.self, from: data) else { return }
-            self?.userInfo.id = model.id
-            self?.userInfo.nickName = model.nickName ?? ""
-            self?.userInfo.role = model.role ?? ""
-            if self?.userInfo.nickName != "" {
-                self?.goToMain()
-            }
-            else {
-                self?.goToSign()
-            }
+
         }
         
         
@@ -116,6 +129,14 @@ class LogoViewController: UIViewController {
         }
     }
 
+    func goToLogin(){
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "login")
+        vc?.modalPresentationStyle = .fullScreen
+        vc?.modalTransitionStyle = .crossDissolve
+        self.present(vc!, animated: true, completion: nil)
+    }
+    
+    
     func goToMain(){
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "main")
         vc?.modalPresentationStyle = .fullScreen

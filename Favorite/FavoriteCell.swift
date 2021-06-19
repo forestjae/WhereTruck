@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyInfoFavoriteCell: UITableViewCell {
+class FavoriteCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
