@@ -14,6 +14,28 @@ class MyMenuViewController: UIViewController {
         return barButtonItem
     }()
 
+    let reviewTableView = UITableView().then {
+        $0.backgroundColor = .clear
+        $0.tableFooterView = UIView()
+        $0.separatorStyle = .none
+        $0.rowHeight = UITableView.automaticDimension
+        $0.showsVerticalScrollIndicator = false
+        $0.isScrollEnabled = false
+            }
+    
+    func bindConstraint() {
+        
+        reviewTableView.snp.makeConstraints{ (make) in
+        
+            make.top.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(0)
+            make.right.equalToSuperview().offset(0)
+            make.bottom.equalToSuperview().offset(10)
+        }
+        
+        
+    }
+    
     @objc func didEditButtonTouched(_ sender: UIBarButtonItem) {
         
     }
@@ -21,6 +43,8 @@ class MyMenuViewController: UIViewController {
     func navigationButtonSetup(){
         navigationItem.rightBarButtonItem = editBarButton
     }
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

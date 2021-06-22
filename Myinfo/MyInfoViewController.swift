@@ -130,12 +130,13 @@ class MyInfoViewController: UIViewController {
 //
 //        }
     }
-    
+    let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
 
     let item: [String] = ["abc", "def", "ghi", "dasf"]
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        
     
         view.addSubview(reviewTableView)
         reviewTableView.delegate = self
@@ -152,23 +153,16 @@ class MyInfoViewController: UIViewController {
         view.addSubview(nickNameContainer)
         view.addSubview(nickNameButton)
         view.addSubview(configButton)
-//
-//        view.addSubview(truckContainer)
-//        view.addSubview(truckLabel)
-//        view.addSubview(truckConfigButton)
-//        view.addSubview(truckNameLabel)
-//        view.addSubview(truckImage)
-//        view.addSubview(truckStatusLabel)
-//
+
         view.addSubview(reviewLabel)
         view.addSubview(reviewCountLabel)
      
 
-//        view.addSubview(menuLabel)
-        
-        
+        self.navigationItem.backBarButtonItem = backBarButtonItem
+        backBarButtonItem.tintColor = UIColor(red: 255/255, green: 182/255, blue: 166/255, alpha: 1.0)
         
         bindConstraints()
+        
         
         self.configButton.addTarget(self, action: #selector(membershipConfigButtonTouched(_:)), for: .touchUpInside)
     }

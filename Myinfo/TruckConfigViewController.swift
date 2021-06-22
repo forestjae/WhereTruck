@@ -13,7 +13,7 @@ class TruckConfigViewController: UIViewController {
     let truckInfo = TruckInfo.shared
     
     let truckNameTitleLabel = UILabel().then {
-        $0.text = "트럭이름"
+        $0.text = "트럭 이름"
         $0.textColor = .black
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         $0.numberOfLines = 2
@@ -40,13 +40,13 @@ class TruckConfigViewController: UIViewController {
         $0.placeholder = "트럭이름을 입력하세요"
         $0.font = UIFont(name: "AppleSDGothicNeo-Light", size: 18)
         $0.layer.borderWidth = 1.0
-        $0.layer.borderColor = UIColor.systemPink.cgColor
+        $0.layer.borderColor = CGColor(red: 255/255, green: 182/255, blue: 166/255, alpha: 1.0)
         $0.layer.cornerRadius = 8
         $0.textColor = UIColor.black
     }
     
     let truckDescriptionTitleLabel = UILabel().then {
-        $0.text = "트럭설명"
+        $0.text = "트럭 설명"
         $0.textColor = .black
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         
@@ -61,7 +61,7 @@ class TruckConfigViewController: UIViewController {
         $0.returnKeyType = .done
         $0.layer.cornerRadius = 8
         $0.layer.borderWidth = 1.0
-        $0.layer.borderColor = UIColor.systemPink.cgColor
+        $0.layer.borderColor = CGColor(red: 255/255, green: 182/255, blue: 166/255, alpha: 1.0)
 
         
         
@@ -69,7 +69,7 @@ class TruckConfigViewController: UIViewController {
     
     
     let truckImageTitleLabel = UILabel().then {
-        $0.text = "트럭대표사진"
+        $0.text = "트럭 대표사진"
         $0.textColor = .black
         $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 18)
         
@@ -81,6 +81,15 @@ class TruckConfigViewController: UIViewController {
         $0.layer.shadowColor = UIColor.black.cgColor
         $0.layer.shadowOffset = CGSize(width: 1.5, height: 1)
         $0.layer.shadowOpacity = 0.5
+    }
+    
+    let truckImageModifyButton = UIButton().then {
+        $0.setTitle("사진 변경", for: .normal)
+        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 14.5)
+        $0.semanticContentAttribute = .forceLeftToRight
+        $0.setTitleColor(.systemBlue, for: .normal)
+        $0.tintColor = .systemBlue
+        
     }
 
     
@@ -156,11 +165,18 @@ class TruckConfigViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
         }
         
+        self.truckImageModifyButton.snp.makeConstraints { make in
+            make.top.equalTo(truckDescriptionField.snp.bottom).offset(18)
+            make.left.equalTo(truckImageTitleLabel.snp.right).offset(30)
+        }
+        
         self.myTruckImage.snp.makeConstraints { make in
             make.top.equalTo(truckImageTitleLabel.snp.bottom).offset(10)
             make.left.equalToSuperview().offset(20)
             make.width.height.equalTo(100)
         }
+        
+        
         
 //        self.initTruckButton.snp.makeConstraints { make in
 //            make.top.equalTo(myTruckImage.snp.bottom).offset(10)
@@ -172,13 +188,13 @@ class TruckConfigViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
         }
         
-//        DispatchQueue.main.async {
-//            
-//            let url = URL(string: self.truckInfo.imageUrl)
-//            guard let url = url else { return }
-//            self.myTruckImage.kf.setImage(with: url)
-//      
-//        }
+        DispatchQueue.main.async {
+            
+            let url = URL(string: self.truckInfo.imageUrl)
+            guard let url = url else { return }
+            self.myTruckImage.kf.setImage(with: url)
+      
+        }
     }
     
     
@@ -192,6 +208,27 @@ class TruckConfigViewController: UIViewController {
         let barButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(didCompleteButtonTouched(_:)))
         return barButtonItem
     }()
+    
+    let picker = UIImagePickerController()
+    
+    @objc func didImageModifyButtonTouched(_ sender: Any) {
+        let alert =  UIAlertController(title: nil, message: "사진을 올릴 방법을 선택해 주세요", preferredStyle: .actionSheet)
+
+        let library =  UIAlertAction(title: "사진앨범", style: .default) { (action) in self.openLibrary()
+        }
+
+        let camera =  UIAlertAction(title: "카메라", style: .default) { (action) in
+        self.openCamera()
+        }
+
+        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+
+        alert.addAction(library)
+        alert.addAction(camera)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+        
+    }
 
     @objc func didCompleteButtonTouched(_ sender: UIBarButtonItem) {
         modifyTruck()
@@ -250,20 +287,22 @@ class TruckConfigViewController: UIViewController {
             multipartFormData.append(Data(self.truckInfo.id.utf8), withName: "id")
             multipartFormData.append(Data(self.truckName.utf8), withName: "name")
             multipartFormData.append(Data(self.truckDescription.utf8), withName: "description")
-            guard let imageData = self.myTruckImage.image!.jpegData(compressionQuality: 0.1) else {return}
+            guard let imageData = self.myTruckImage.image!.jpegData(compressionQuality: 0.5) else {return}
             multipartFormData.append(imageData, withName: "image", fileName: "imagename.jpg", mimeType: "image/jpeg")
             
             
             
             
         }, to: url, headers: headers).responseJSON { (response) in
-            print("3333")
             print(response.result)
             guard let statusCode = response.response?.statusCode else { return }
             
             switch statusCode {
             case 200:
                 print("트럭 변경 성공")
+                self.truckInfo.description = self.truckDescription
+                self.truckInfo.name = self.truckName
+                
             default:
                 print("트럭 변경 실패")
                 break
@@ -302,28 +341,43 @@ class TruckConfigViewController: UIViewController {
         self.view.addSubview(truckDescriptionField)
         self.view.addSubview(truckImageTitleLabel)
         self.view.addSubview(myTruckImage)
+        self.view.addSubview(truckImageModifyButton)
         
         self.view.addSubview(initTruckButton)
         self.view.addSubview(getAllTruckButton)
         initTruckButton.addTarget(self, action: #selector(initTruck), for: .touchUpInside)
         getAllTruckButton.addTarget(self, action: #selector(getAllTruck), for: .touchUpInside)
+        truckImageModifyButton.addTarget(self, action: #selector(didImageModifyButtonTouched(_:)), for: .touchUpInside)
         
         bindConstraint()
         navigationButtonSetup()
-        // Do any additional setup after loading the view.
+        
+        picker.delegate = self
+    }
+}
+
+extension TruckConfigViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func openLibrary(){
+      picker.sourceType = .photoLibrary
+      present(picker, animated: false, completion: nil)
+    }
+    func openCamera(){
+      picker.sourceType = .camera
+      present(picker, animated: false, completion: nil)
+    }
+
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
+                 myTruckImage.image = image
+                
+             }
+             dismiss(animated: true, completion: nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
+
+
 
 

@@ -21,8 +21,8 @@ struct Truck: Codable {
     let numRating: Int
     let starAvg: Int
     let imageUrl: String?
-//    let foods: [String]
-//    let ratings: [String]
+//    let foods: [Food]
+//    let ratings: [Rating]
     
     
 }
@@ -39,8 +39,8 @@ class TruckInfo {
     var numRating: Int = -1
     var starAvg: Int = -1
     var imageUrl: String = ""
-    var foods: [String] = []
-    var ratings: [String] = []
+    var foods: [Food] = []
+    var ratings: [Rating] = []
     
     private init() { }
 }

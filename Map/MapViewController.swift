@@ -21,7 +21,7 @@ class MapViewController: UIViewController {
     
     let userDefaults = UserDefaultsValue()
     let userInfo = UserInfo.shared
-    
+    let truckInfo = TruckInfo.shared
     
     let addressTextField = UITextField()
     let locationManager = CLLocationManager()
@@ -57,6 +57,13 @@ class MapViewController: UIViewController {
         $0.layer.shadowOffset = CGSize(width: 2, height: 2)
         $0.layer.shadowOpacity = 0.08
  
+    }
+    
+    let truckOnMapButton = UIButton().then {
+        $0.setTitle("🚚", for: .normal)
+        $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24)
+        $0.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 20)
+        $0.isHidden = false
     }
     
     let searchWithCurrentMap = UIButton().then {
@@ -111,6 +118,8 @@ class MapViewController: UIViewController {
         self.view.addSubview(willSetTruckButton)
         self.view.addSubview(searchWithCurrentMap)
         self.view.addSubview(selectSearchRangeButton)
+        self.view.addSubview(truckOnMapButton)
+        
         naverMapView.showZoomControls = false
         naverMapView.showLocationButton = true
         
@@ -152,6 +161,11 @@ class MapViewController: UIViewController {
         self.selectSearchRangeButton.snp.makeConstraints { make in
             make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
             make.top.equalTo(addressButton).offset(50)
+        }
+        
+        self.truckOnMapButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
         }
         
         
@@ -214,8 +228,6 @@ class MapViewController: UIViewController {
     }
     
     func permissionRegionMarkerDraw(){
-        
-        print(11111)
 
         DispatchQueue.global(qos: .default).async {
             // 백그라운드 스레드
@@ -237,6 +249,11 @@ class MapViewController: UIViewController {
     }
     
     func permissionRegionMarkerDelete(){
+        
+        
+    }
+    
+    func presentTruckMarer(){
         
         
     }
@@ -293,8 +310,6 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
         self.naverMapView.mapView.addCameraDelegate(delegate: self)
 
         locationManager.delegate = self
@@ -313,14 +328,31 @@ class MapViewController: UIViewController {
         
         setAddressOnButton()
         self.selectSearchRangeButton.addTarget(self, action: #selector(onTabButton), for: .touchUpInside)
+        self.willSetTruckButton.addTarget(self, action: #selector(touchUpWillSetTruckButton), for: .touchUpInside)
         
         self.truckClass.getMyTruckFromAPI(authToken: self.userDefaults.getToken())
-        
+        self.searchWithCurrentMap.addTarget(self, action: #selector(touchUpSearchButton), for: .touchUpInside)
         dropDown.dataSource = ["5Km", "10Km", "20Km"]
         
         print("id: \(userInfo.id) / nickName:\(userInfo.nickName) / role:\(userInfo.role)")
         
         // Do any additional setup after loading the view.
+    }
+    
+    var geoCodeToSetTruck: (lat: Double, lng: Double) = (0.0,0.0)
+    
+    @objc func touchUpWillSetTruckButton() {
+        let lat = naverMapView.mapView.cameraPosition.target.lat
+        let lng = naverMapView.mapView.cameraPosition.target.lng
+        truckClass.setTruckOpened(authToken: userDefaults.getToken(), truckId: truckInfo.id , lat: lat, lng: lng
+        )
+    }
+    
+    @objc func touchUpSearchButton() {
+        let lat = naverMapView.mapView.cameraPosition.target.lat
+        let lng = naverMapView.mapView.cameraPosition.target.lng
+        
+        truckClass.getTruckBasedOnLocationFromAPI(authToken: userDefaults.getToken(), lat: lat, lng: lng, distance: 30)
     }
     
     @objc func onTabButton() {
@@ -378,6 +410,7 @@ extension MapViewController: NMFMapViewCameraDelegate {
             )
             getAddressFromGeocode(lat: mapLocation.coordinate.latitude, lng: mapLocation.coordinate.longitude)
             setAddressOnButton()
+
         }
     }
 }

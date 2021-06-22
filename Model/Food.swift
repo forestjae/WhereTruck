@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+struct Food: Codable {
+    let id: String
+    let name: String
+    let cost: String
+    let description: String
+    let imageUrl: String?
+    
+}
+

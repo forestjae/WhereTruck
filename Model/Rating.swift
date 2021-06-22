@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+
+struct Rating: Codable {
+    let id: String
+    let star: String
+    let comment: String
+
+}

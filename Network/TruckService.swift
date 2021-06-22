@@ -56,7 +56,7 @@ class TruckService {
                         guard let data = response.data else { return }
                         let decoder = JSONDecoder()
                         guard let model = try? decoder.decode(TruckList.self, from: data) else { return }
-                        truck = model.docs[1]
+                        truck = model.docs[0]
                         print(1111113)
                         
                         
@@ -72,13 +72,8 @@ class TruckService {
                             truckInfo.starAvg = truck.starAvg
                             guard let url = truck.imageUrl else { return }
                             truckInfo.imageUrl = url
-                            
-                            print("1111\(truckInfo.id)")
-                            
                         }
-                   
-                        
-                        
+
                     case 400:
                         print("400 ERROR!")
                     case 500:
@@ -94,6 +89,107 @@ class TruckService {
         }
 
     }
+    
+    
+    func getTruckBasedOnLocationFromAPI(authToken: String, lat: Double, lng: Double, distance: Int) -> [Truck]? {
+        let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/geo?lat=\(lat)&lon=\(lng)&distance=\(distance)"
+        let jwt: HTTPHeaders = [
+            "jwt": authToken
+        ]
+        var truckList: [Truck] = []
+        
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: jwt).responseJSON{ (response) in
+            switch response.result {
+            case .success:
+                print(response.result)
+                if let status = response.response?.statusCode{
+                    switch status {
+                    case 200:
+                        guard let data = response.data else { return }
+                        let decoder = JSONDecoder()
+                        guard let model = try? decoder.decode(TruckList.self, from: data) else { return }
+                        
+                        truckList = model.docs
+                        
+                    case 400:
+                        print("400 ERROR!")
+                    case 500:
+                        print("500 ERROR!")
+                        
+                    default:
+                        break
+                    }
+                }
+            case .failure(let error):
+                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+            }
+        }
+        return truckList
+        
+    }
+    
+    
+    func setTruckOpened(authToken: String, truckId: String, lat: Double, lng: Double) {
+        print(truckId)
+        let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/start/\(truckId)"
+        let jwt: HTTPHeaders = [
+            "jwt": authToken
+        ]
+        
+        let parameters: [String: Double] = [
+            "lat" : lat,
+            "lon" : lng
+        ]
+        AF.request(url, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: jwt).responseJSON{ (response) in
+            switch response.result {
+            case .success:
+                print(response.result)
+                if let status = response.response?.statusCode{
+                    switch status {
+                    case 200:
+                        print("장사 시작 성공")
+                    case 400:
+                        print("400 ERROR!")
+                    case 500:
+                        print("500 ERROR!")
+                    default:
+                        break
+                    }
+                }
+            case .failure(let error):
+                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+            }
+        }
+    }
+    
+    func setTruckClosed(authToken: String) {
+        let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/stop"
+        let jwt: HTTPHeaders = [
+            "jwt": authToken
+        ]
+       
+        AF.request(url, method: .put, headers: jwt).responseJSON{ (response) in
+            switch response.result {
+            case .success:
+                print(response.result)
+                if let status = response.response?.statusCode{
+                    switch status {
+                    case 200:
+                        print("장사 중단 성공")
+                    case 400:
+                        print("400 ERROR!")
+                    case 500:
+                        print("500 ERROR!")
+                    default:
+                        break
+                    }
+                }
+            case .failure(let error):
+                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+            }
+        }
+    }
+    
     
  
 }

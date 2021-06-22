@@ -118,9 +118,13 @@ class MyTruckViewController: UIViewController {
         navigationController?.pushViewController(TruckConfigViewController, animated: true)
         
     }
+    
+    
 
     func navigationButtonSetup(){
         navigationItem.rightBarButtonItem = editBarButton
+        
+
     }
     
     func setUpView(){
@@ -151,7 +155,6 @@ class MyTruckViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("111111:\(self.truckInfo.name)")
         navigationButtonSetup()
         setUpView()
         
