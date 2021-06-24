@@ -22,6 +22,7 @@ class MapViewController: UIViewController {
     let userDefaults = UserDefaultsValue()
     let userInfo = UserInfo.shared
     let truckInfo = TruckInfo.shared
+    var truckList:[Truck] = []
     
     let addressTextField = UITextField()
     let locationManager = CLLocationManager()
@@ -347,13 +348,73 @@ class MapViewController: UIViewController {
         truckClass.setTruckOpened(authToken: userDefaults.getToken(), truckId: truckInfo.id , lat: lat, lng: lng
         )
     }
-    
+    var indexnum = 0
+    let captions = ["엄청맛있는 토스트", "하와이 트럭", "스테이크 헤븐", "오뎅의 진수", "불타는 붕어빵", "세종대왕 떡볶이"]
     @objc func touchUpSearchButton() {
         let lat = naverMapView.mapView.cameraPosition.target.lat
         let lng = naverMapView.mapView.cameraPosition.target.lng
+        getTruckBasedOnLocationFromAPI(authToken: userDefaults.getToken(), lat: lat, lng: lng, distance: 30)
         
-        truckClass.getTruckBasedOnLocationFromAPI(authToken: userDefaults.getToken(), lat: lat, lng: lng, distance: 30)
+        print("truckList from map : \(truckList)")
+        
+        
+        DispatchQueue.global(qos: .default).async {
+            // 백그라운드 스레드
+            var markers = [NMFMarker]()
+            for truck in self.truckList {
+                let marker = NMFMarker(position: NMGLatLng(lat: truck.geoLocation.lat, lng: truck.geoLocation.lng))
+                marker.iconImage = NMF_MARKER_IMAGE_BLUE
+                marker.captionText = self.captions[self.indexnum]
+                markers.append(marker)
+                self.indexnum += 1
+            }
+            print(markers)
+            DispatchQueue.main.async { [weak self] in
+                // 메인 스레드
+                for marker in markers {
+                    print("마커 생성 성공!!")
+                    marker.mapView = self?.mapView
+                }
+            }
+        }
+        
     }
+    func getTruckBasedOnLocationFromAPI(authToken: String, lat: Double, lng: Double, distance: Int){
+        let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/geo?lat=\(lat)&lon=\(lng)&distance=\(distance)"
+        let jwt: HTTPHeaders = [
+            "jwt": authToken
+        ]
+        
+        
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: jwt).responseJSON{ (response) in
+            switch response.result {
+            case .success:
+                print(response.result)
+                if let status = response.response?.statusCode{
+                    switch status {
+                    case 200:
+                        guard let data = response.data else { return }
+                        let decoder = JSONDecoder()
+                        guard let model = try? decoder.decode(TruckList.self, from: data) else { return }
+                        
+                        self.truckList = model.docs
+                        print("TruckList from api : \(self.truckList)")
+                    case 400:
+                        print("400 ERROR!")
+                    case 500:
+                        print("500 ERROR!")
+                        
+                    default:
+                        break
+                    }
+                }
+            case .failure(let error):
+                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+            }
+        }
+        
+    }
+    
     
     @objc func onTabButton() {
         dropDown.show()
