@@ -362,12 +362,16 @@ class MapViewController: UIViewController {
             // 백그라운드 스레드
             var markers = [NMFMarker]()
             for truck in self.truckList {
-                let marker = NMFMarker(position: NMGLatLng(lat: truck.geoLocation.lat, lng: truck.geoLocation.lng))
-                marker.iconImage = NMF_MARKER_IMAGE_BLUE
+                let marker = NMFMarker(position: NMGLatLng(lat: lat, lng: lng))
+                marker.iconImage = NMFOverlayImage(image: UIImage(systemName: "bus.doubledecker")!)
+                
                 marker.captionText = self.captions[self.indexnum]
+                marker.captionColor = .blue
+                marker.captionTextSize = 15
                 markers.append(marker)
-                self.indexnum += 1
+                
             }
+            self.indexnum += 1
             print(markers)
             DispatchQueue.main.async { [weak self] in
                 // 메인 스레드
