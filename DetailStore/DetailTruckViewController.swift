@@ -9,6 +9,10 @@ import UIKit
 
 class DetailTruckViewController: UIViewController {
     
+    let userInfo = UserInfo.shared
+    let userDefaults = UserDefaultsValue()
+
+    
     let navigationView = UIView().then {
       $0.layer.cornerRadius = 20
       $0.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
@@ -22,124 +26,47 @@ class DetailTruckViewController: UIViewController {
     let backButton = UIButton().then {
       $0.setImage(UIImage.init(named: "ic_back_black"), for: .normal)
     }
+       
+    let detailTruckTableView = UITableView().then {
+        $0.backgroundColor = .clear
+        $0.tableFooterView = UIView()
+        $0.separatorStyle = .none
+        $0.rowHeight = UITableView.automaticDimension
+        $0.showsVerticalScrollIndicator = false
+        $0.isScrollEnabled = false
+            }
     
-    let infoContainer = UIView().then {
-      $0.backgroundColor = .white
-      $0.layer.cornerRadius = 12
-    }
+    let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
     
-    let storeTypeLabel = UILabel().then{
-      $0.text = "store_detail_type".localized
-      $0.textColor = .black
-      $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 14)
-    }
-    
-    let storeTypeValueLabel = UILabel().then {
-      $0.textColor = UIColor(red: 255/255, green: 161/255, blue: 170/255, alpha: <#T##CGFloat#>)(r: 255, g: 161, b: 170)
-      $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
-      $0.text = "노점"
-    }
-    
-    let storeTypeEmptyLabel = UILabel().then {
-      $0.textColor = UIColor(r: 183, g: 183, b: 183)
-      $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
-      $0.text = "store_detail_info_empty".localized
-      $0.isHidden = false
-    }
-    
-    let storeDaysLabel = UILabel().then{
-      $0.text = "store_detail_days".localized
-      $0.textColor = .black
-      $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 14)
-    }
-    
-    let dayStackView = DayStackView()
-    
-    let storeDaysEmptyLabel = UILabel().then {
-      $0.textColor = UIColor(r: 183, g: 183, b: 183)
-      $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
-      $0.text = "store_detail_info_empty".localized
-      $0.isHidden = true
-    }
-    
-    let paymentLabel = UILabel().then {
-      $0.text = "store_detail_payment".localized
-      $0.textColor = .black
-      $0.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 14)
-    }
-    
-    let cardLabel = UILabel().then {
-      $0.textColor = UIColor(r: 161, g: 161, b: 161)
-      $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
-      $0.text = "store_detail_payment_card".localized
-    }
-    
-    let cardCircleView = UIView().then {
-      $0.backgroundColor = UIColor(r: 161, g: 161, b: 161)
-      $0.layer.cornerRadius = 4
-    }
-    
-    let transferLabel = UILabel().then {
-      $0.text = "store_detail_transfer".localized
-      $0.textColor = UIColor(r: 161, g: 161, b: 161)
-      $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
-    }
-    
-    let transferCircleView = UIView().then {
-      $0.backgroundColor = UIColor(r: 161, g: 161, b: 161)
-      $0.layer.cornerRadius = 4
-    }
-    
-    let cashLabel = UILabel().then {
-      $0.textColor = UIColor(r: 161, g: 161, b: 161)
-      $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
-      $0.text = "store_detail_payment_cash".localized
-    }
-    
-    let cashCircleView = UIView().then {
-      $0.backgroundColor = UIColor(r: 161, g: 161, b: 161)
-      $0.layer.cornerRadius = 4
-    }
-    
-    let storePaymentEmptyLabel = UILabel().then {
-      $0.textColor = UIColor(r: 183, g: 183, b: 183)
-      $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
-      $0.text = "store_detail_info_empty".localized
-      $0.isHidden = true
-    }
+    func bindConstraints() {
         
-    
-    func bindConstraint() {
-        detailTruckTableView.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.top.equalToSuperview().offset(20)
+        
+        detailTruckTableView.snp.makeConstraints{ (make) in
+        
+            make.top.equalToSuperview().offset(10)
+            make.left.equalToSuperview().offset(0)
+            make.right.equalToSuperview().offset(0)
+            make.bottom.equalToSuperview().offset(10)
         }
+        
+        
     }
-    
-    //    lazy var editBarButton: UIBarButtonItem = {
-    //        let barButtonItem = UIBarButtonItem(title: "수정", style: .plain, target: self, action: #selector(didEditButtonTouched(_:)))
-    //        return barButtonItem
-    //    }()
-    
-    //    @objc func didEditButtonTouched(_ sender: UIBarButtonItem) {
-    //
-    //    }
-    
-    //    func navigationButtonSetup(){
-    //        navigationItem.rightBarButtonItem = editBarButton
-    //    }
-    //
-    //    @objc func editBarButtonTouched(_ sender: UIBarItem){
-    //            guard let MyMembershipViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: "MyMembershipViewController") as? MyMembershipViewController else { return }
-    //            navigationController?.pushViewController(MyMembershipViewController, animated: true)
-    //    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(detailTruckTableView)
         
+        view.addSubview(detailTruckTableView)
+        
+        detailTruckTableView.delegate = self
+        detailTruckTableView.dataSource = self
+        detailTruckTableView.translatesAutoresizingMaskIntoConstraints = false
+        self.detailTruckTableView.register(MyInfoReviewCell.self, forCellReuseIdentifier: "MyInfoReviewCell")
+        self.detailTruckTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        detailTruckTableView.rowHeight = UITableView.automaticDimension
+        detailTruckTableView.estimatedRowHeight = UITableView.automaticDimension
+        detailTruckTableView.sectionHeaderHeight = UITableView.automaticDimension
+        detailTruckTableView.estimatedSectionHeaderHeight = 50
         
         self.view.backgroundColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1.0)
     }
@@ -152,5 +79,105 @@ class DetailTruckViewController: UIViewController {
     
 }
 
+extension DetailTruckViewController: UITableViewDelegate, UITableViewDataSource{
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    
+ 
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 2
+        case 1:
+            return 4
+        default:
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            let headerView = UIView()
+            headerView.backgroundColor = UIColor.lightGray
+            let sectionLabel = UILabel(frame: CGRect(x: 8, y: 28, width: tableView.bounds.width, height: tableView.bounds.size.height))
+            sectionLabel.font = UIFont(name : "AppleSDGothicNeo", size: 20)
+            sectionLabel.textColor = UIColor.black
+            sectionLabel.text = "내 설정"
+            sectionLabel.sizeToFit()
+            headerView.addSubview(sectionLabel)
+            headerView.translatesAutoresizingMaskIntoConstraints = false
+            headerView.layoutIfNeeded()
+            return headerView
+        }
+        else if section == 1 {
+            let headerView = UIView()
+            headerView.backgroundColor = UIColor.lightGray
+            let sectionLabel = UILabel(frame: CGRect(x: 8, y: 28, width: tableView.bounds.width, height: tableView.bounds.size.height))
+            sectionLabel.font = UIFont(name : "AppleSDGothicNeo", size: 20)
+            sectionLabel.textColor = UIColor.black
+            sectionLabel.text = "내 리뷰"
+            sectionLabel.sizeToFit()
+            
+            let reviewMoreButton = UIButton(frame: CGRect(x: 4, y: 10, width: 10, height: tableView.bounds.size.height))
+            reviewMoreButton.setTitle("더 보기", for: .normal)
+            reviewMoreButton.setTitleColor(UIColor(red: 200/255, green: 100/255, blue: 7/255, alpha: 1.0), for: .normal)
+            reviewMoreButton.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+            
+            
+            headerView.addSubview(sectionLabel)
+            headerView.addSubview(reviewMoreButton)
+            headerView.translatesAutoresizingMaskIntoConstraints = false
+     
+  
+            headerView.layoutIfNeeded()
+            return headerView
+            
+        }
+        else {
+            return UIView()
+        }
+    }
+    
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.section == 0 {
+            let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+            cell.textLabel!.text = self.myInfoMenuList[indexPath.row]
+            cell.textLabel?.textColor = .black
+            cell.accessoryType = .disclosureIndicator
+            return cell
+        }
+        
+        else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyInfoReviewCell", for: indexPath) as? MyInfoReviewCell else {
+                return UITableViewCell() }
+
+            return cell
+        }
+        
+
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+        
+        switch indexPath.row {
+        case 0:
+            
+            guard let MyTruckViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: "MyTruckViewController") as? MyTruckViewController else { return }
+            navigationController?.pushViewController(MyTruckViewController, animated: true)
+        case 1:
+            guard let MyMenuViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: "MyMenuViewController") as? MyMenuViewController else { return }
+            navigationController?.pushViewController(MyMenuViewController, animated: true)
+        default:
+            break
+        }
+    }
 }
+

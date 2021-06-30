@@ -132,13 +132,12 @@ class MyInfoViewController: UIViewController {
     }
     let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
 
-    let item: [String] = ["abc", "def", "ghi", "dasf"]
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
     
-        view.addSubview(reviewTableView)
+        
         reviewTableView.delegate = self
         reviewTableView.dataSource = self
         reviewTableView.translatesAutoresizingMaskIntoConstraints = false
