@@ -91,7 +91,7 @@ class TruckService {
     }
     
     
-    func getTruckBasedOnLocationFromAPI(authToken: String, lat: Double, lng: Double, distance: Int) -> [Truck]? {
+    func getTruckBasedOnLocationFromAPI(authToken: String, lat: Double, lng: Double, distance: Int, handler: @escaping ([Truck]?) -> Void) {
         let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/geo?lat=\(lat)&lon=\(lng)&distance=\(distance)"
         let jwt: HTTPHeaders = [
             "jwt": authToken
@@ -124,8 +124,6 @@ class TruckService {
                 print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
             }
         }
-        return truckList
-        
     }
     
     

@@ -350,10 +350,14 @@ class MapViewController: UIViewController {
     }
     var indexnum = 0
     let captions = ["엄청맛있는 토스트", "하와이 트럭", "스테이크 헤븐", "오뎅의 진수", "불타는 붕어빵", "세종대왕 떡볶이"]
+    
     @objc func touchUpSearchButton() {
         let lat = naverMapView.mapView.cameraPosition.target.lat
         let lng = naverMapView.mapView.cameraPosition.target.lng
-        getTruckBasedOnLocationFromAPI(authToken: userDefaults.getToken(), lat: lat, lng: lng, distance: 30)
+        truckClass.getTruckBasedOnLocationFromAPI(authToken: userDefaults.getToken(), lat: lat, lng: lng, distance: 30) { truckList in
+            guard let truckListFromAPI = truckList else { return }
+            self.truckList = truckListFromAPI
+        }
         
         print("truckList from map : \(truckList)")
         
@@ -383,42 +387,42 @@ class MapViewController: UIViewController {
         }
         
     }
-    func getTruckBasedOnLocationFromAPI(authToken: String, lat: Double, lng: Double, distance: Int){
-        let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/geo?lat=\(lat)&lon=\(lng)&distance=\(distance)"
-        let jwt: HTTPHeaders = [
-            "jwt": authToken
-        ]
-        
-        
-        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: jwt).responseJSON{ (response) in
-            switch response.result {
-            case .success:
-                print(response.result)
-                if let status = response.response?.statusCode{
-                    switch status {
-                    case 200:
-                        guard let data = response.data else { return }
-                        let decoder = JSONDecoder()
-                        guard let model = try? decoder.decode(TruckList.self, from: data) else { return }
-                        
-                        self.truckList = model.docs
-                        print("TruckList from api : \(self.truckList)")
-                    case 400:
-                        print("400 ERROR!")
-                    case 500:
-                        print("500 ERROR!")
-                        
-                    default:
-                        break
-                    }
-                }
-            case .failure(let error):
-                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
-            }
-        }
-        
-    }
-    
+//    func getTruckBasedOnLocationFromAPI(authToken: String, lat: Double, lng: Double, distance: Int){
+//        let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/geo?lat=\(lat)&lon=\(lng)&distance=\(distance)"
+//        let jwt: HTTPHeaders = [
+//            "jwt": authToken
+//        ]
+//
+//
+//        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: jwt).responseJSON{ (response) in
+//            switch response.result {
+//            case .success:
+//                print(response.result)
+//                if let status = response.response?.statusCode{
+//                    switch status {
+//                    case 200:
+//                        guard let data = response.data else { return }
+//                        let decoder = JSONDecoder()
+//                        guard let model = try? decoder.decode(TruckList.self, from: data) else { return }
+//
+//                        self.truckList = model.docs
+//                        print("TruckList from api : \(self.truckList)")
+//                    case 400:
+//                        print("400 ERROR!")
+//                    case 500:
+//                        print("500 ERROR!")
+//
+//                    default:
+//                        break
+//                    }
+//                }
+//            case .failure(let error):
+//                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+//            }
+//        }
+//
+//    }
+//
     
     @objc func onTabButton() {
         dropDown.show()
