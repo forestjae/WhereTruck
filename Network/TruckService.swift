@@ -77,7 +77,7 @@ class TruckService {
                     case 400:
                         print("400 ERROR!")
                     case 500:
-                        print("500 ERROR!")
+                        print("getmytruck 500 ERROR!")
                         
                     default:
                         break
@@ -91,12 +91,11 @@ class TruckService {
     }
     
     
-    func getTruckBasedOnLocationFromAPI(authToken: String, lat: Double, lng: Double, distance: Int, handler: @escaping ([Truck]?) -> Void) {
+    func getTruckBasedOnLocationFromAPI(authToken: String, lat: Double, lng: Double, distance: Int, handler: @escaping (TruckList) -> Void) {
         let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/geo?lat=\(lat)&lon=\(lng)&distance=\(distance)"
         let jwt: HTTPHeaders = [
             "jwt": authToken
         ]
-        var truckList: [Truck]?
         
         AF.request(url, method: .get, encoding: JSONEncoding.default, headers: jwt).responseJSON{ (response) in
             switch response.result {
@@ -108,9 +107,8 @@ class TruckService {
                         guard let data = response.data else { return }
                         let decoder = JSONDecoder()
                         guard let model = try? decoder.decode(TruckList.self, from: data) else { return }
-                        
-                        truckList = model.docs
-                        print("truckList from api :\(truckList)")
+                        handler(model)
+//                        print("truckList from api :\(truckList)")
                     case 400:
                         print("400 ERROR!")
                     case 500:

@@ -348,35 +348,27 @@ class MapViewController: UIViewController {
         truckClass.setTruckOpened(authToken: userDefaults.getToken(), truckId: truckInfo.id , lat: lat, lng: lng
         )
     }
-    var indexnum = 0
-    let captions = ["엄청맛있는 토스트", "하와이 트럭", "스테이크 헤븐", "오뎅의 진수", "불타는 붕어빵", "세종대왕 떡볶이"]
     
     @objc func touchUpSearchButton() {
         let lat = naverMapView.mapView.cameraPosition.target.lat
         let lng = naverMapView.mapView.cameraPosition.target.lng
-        truckClass.getTruckBasedOnLocationFromAPI(authToken: userDefaults.getToken(), lat: lat, lng: lng, distance: 30) { truckList in
-            guard let truckListFromAPI = truckList else { return }
-            self.truckList = truckListFromAPI
-        }
-        
-        print("truckList from map : \(truckList)")
-        
-        
+        print("아왜안됨 ㅜㅜ")
+        truckClass.getTruckBasedOnLocationFromAPI(authToken: userDefaults.getToken(), lat: lat, lng: lng, distance: 30) { (model) in
+            print("왜안되냐궁..")
+            print("truckListFromAPi Called!")
         DispatchQueue.global(qos: .default).async {
             // 백그라운드 스레드
             var markers = [NMFMarker]()
-            for truck in self.truckList {
-                let marker = NMFMarker(position: NMGLatLng(lat: lat, lng: lng))
+            for truck in model.docs {
+                let marker = NMFMarker(position: NMGLatLng(lat: truck.geoLocation.lat, lng: truck.geoLocation.lng))
                 marker.iconImage = NMFOverlayImage(image: UIImage(systemName: "bus.doubledecker")!)
                 
-                marker.captionText = self.captions[self.indexnum]
+                marker.captionText = truck.name
                 marker.captionColor = .blue
                 marker.captionTextSize = 15
                 markers.append(marker)
                 
             }
-            self.indexnum += 1
-            print(markers)
             DispatchQueue.main.async { [weak self] in
                 // 메인 스레드
                 for marker in markers {
@@ -385,7 +377,7 @@ class MapViewController: UIViewController {
                 }
             }
         }
-        
+        }
     }
 //    func getTruckBasedOnLocationFromAPI(authToken: String, lat: Double, lng: Double, distance: Int){
 //        let url = "http://ec2-13-209-181-246.ap-northeast-2.compute.amazonaws.com:8080/api/truck/geo?lat=\(lat)&lon=\(lng)&distance=\(distance)"
